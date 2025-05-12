@@ -13,42 +13,38 @@ public class ExchangeRate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @Column(name="broj_tecajnice")
     private String brojTecajnice;
 
     @Column(name = "datum_primjene")
     private LocalDate datumPrimjene;
 
+    @Column(name="drzava")
     private String drzava;
 
     @Column(name = "drzava_iso")
-    private String drzavaIso;
+    private String drzava_iso;
 
     @Column(name = "sifra_valute")
     private String sifraValute;
 
+    @Column(name="valuta ")
     private String valuta;
 
     @Column(name = "kupovni_tecaj")
-    private BigDecimal kupovniTecaj;
+    private String kupovni_tecaj;
 
     @Column(name = "prodajni_tecaj")
-    private BigDecimal prodajniTecaj;
+    private String prodajni_tecaj;
 
     @Column(name = "srednji_tecaj")
-    private BigDecimal srednjiTecaj;
+    private String  srednji_tecaj;
 
-    public ExchangeRate(Long id, String brojTecajnice, LocalDate datumPrimjene, String drzava, String drzavaIso, String sifraValute, String valuta, BigDecimal kupovniTecaj, BigDecimal prodajniTecaj, BigDecimal srednjiTecaj) {
-        this.id = id;
-        this.brojTecajnice = brojTecajnice;
-        this.datumPrimjene = datumPrimjene;
-        this.drzava = drzava;
-        this.drzavaIso = drzavaIso;
-        this.sifraValute = sifraValute;
-        this.valuta = valuta;
-        this.kupovniTecaj = kupovniTecaj;
-        this.prodajniTecaj = prodajniTecaj;
-        this.srednjiTecaj = srednjiTecaj;
+
+
+    public ExchangeRate() {
+
     }
 
 
@@ -60,20 +56,20 @@ public class ExchangeRate {
         this.id = id;
     }
 
-    public String getBrojTecajnice() {
+    public String getBroj_tecajnice() {
         return brojTecajnice;
     }
 
-    public void setBrojTecajnice(String brojTecajnice) {
-        this.brojTecajnice = brojTecajnice;
+    public void setBroj_tecajnice(String broj_tecajnice) {
+        this.brojTecajnice = broj_tecajnice;
     }
 
     public LocalDate getDatumPrimjene() {
         return datumPrimjene;
     }
 
-    public void setDatumPrimjene(LocalDate datumPrimjene) {
-        this.datumPrimjene = datumPrimjene;
+    public void setDatum_primjene(LocalDate datum_primjene) {
+        this.datumPrimjene = datum_primjene;
     }
 
     public String getDrzava() {
@@ -84,20 +80,20 @@ public class ExchangeRate {
         this.drzava = drzava;
     }
 
-    public String getDrzavaIso() {
-        return drzavaIso;
+    public String getDrzava_iso() {
+        return drzava_iso;
     }
 
-    public void setDrzavaIso(String drzavaIso) {
-        this.drzavaIso = drzavaIso;
+    public void setDrzava_iso(String drzava_iso) {
+        this.drzava_iso = drzava_iso;
     }
 
-    public String getSifraValute() {
+    public String getsifraValute() {
         return sifraValute;
     }
 
-    public void setSifraValute(String sifraValute) {
-        this.sifraValute = sifraValute;
+    public void setSifra_valute(String sifra_valute) {
+        this.sifraValute = sifra_valute;
     }
 
     public String getValuta() {
@@ -108,27 +104,40 @@ public class ExchangeRate {
         this.valuta = valuta;
     }
 
-    public BigDecimal getKupovniTecaj() {
-        return kupovniTecaj;
+    public String getKupovni_tecaj() {
+        return kupovni_tecaj;
     }
 
-    public void setKupovniTecaj(BigDecimal kupovniTecaj) {
-        this.kupovniTecaj = kupovniTecaj;
+    public void setKupovni_tecaj(String kupovni_tecaj) {
+        this.kupovni_tecaj = kupovni_tecaj;
     }
 
-    public BigDecimal getProdajniTecaj() {
-        return prodajniTecaj;
+    public String getProdajni_tecaj() {
+        return prodajni_tecaj;
     }
 
-    public void setProdajniTecaj(BigDecimal prodajniTecaj) {
-        this.prodajniTecaj = prodajniTecaj;
+    public void setProdajni_tecaj(String prodajni_tecaj) {
+        this.prodajni_tecaj = prodajni_tecaj;
     }
 
-    public BigDecimal getSrednjiTecaj() {
-        return srednjiTecaj;
+    public String getSrednji_tecaj() {
+        return srednji_tecaj;
     }
 
-    public void setSrednjiTecaj(BigDecimal srednjiTecaj) {
-        this.srednjiTecaj = srednjiTecaj;
+    public void setSrednji_tecaj(String srednji_tecaj) {
+        this.srednji_tecaj = srednji_tecaj;
+    }
+
+    public ExchangeRate(Long id, String broj_tecajnice, LocalDate datum_primjene, String drzava, String drzava_iso, String sifra_valute, String valuta, String kupovni_tecaj, String prodajni_tecaj, String srednji_tecaj) {
+        this.id = id;
+        this.brojTecajnice = broj_tecajnice;
+        this.datumPrimjene = datum_primjene;
+        this.drzava = drzava;
+        this.drzava_iso = drzava_iso;
+        this.sifraValute = sifra_valute;
+        this.valuta = valuta;
+        this.kupovni_tecaj = kupovni_tecaj;
+        this.prodajni_tecaj = prodajni_tecaj;
+        this.srednji_tecaj = srednji_tecaj;
     }
 }
