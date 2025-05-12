@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Pagination from "../components/Pagination";
 import axios from "axios";
 
 function ExchangeRate() {
@@ -15,38 +16,59 @@ function ExchangeRate() {
     valuta: string;
   }
 
+  //Dohvaćanje tečajnica
   const [exchangeRates, setExchangeRates] = useState<ExchangeRate[]>([]);
+
+  // Prikazivanje poruka
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
+  // Paginacija
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+
+  //Filtriranje po datumu
+ 
+
   useEffect(() => {
     axios
-      .get("http://localhost:8080/rates")
+      .get(`http://localhost:8080/rates?page=${currentPage}&size=5`)
       .then((response) => {
-        console.log("Dohvaćeni podaci:", response.data);
+        const data = response.data;
+
+        setExchangeRates(data.content); // Sadržaj trenutne stranice
+        setTotalPages(data.totalPages); // Ukupan broj stranica
+
+        console.log("Dohvaćeni podaci:", data);
         console.log("No error");
+
         setSuccess(true);
         setTimeout(() => {
           setSuccess(false);
         }, 3000);
-        setExchangeRates(response.data);
       })
       .catch((error) => {
         console.error("Greška pri dohvaćanju tečajnica:", error);
         setError(true);
       });
-  }, []);
+  }, [currentPage]);
 
   const formatDate = (isoDate: string) => {
     const [year, month, day] = isoDate.split("-");
     return `${day}.${month}.${year.slice(0)}`;
   };
 
+  const handlePageChange = (page: number) => {
+    if (page >= 0 && page < totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
   return (
     <div className="container mt-4">
       <div>
         {success && (
-          <div className="alert alert-success">
+          <div className="alert alert-success position-fixed top-0 end-0 m-3">
             <strong>Uspješno!</strong> Tečajnice su uspješno učitane.
           </div>
         )}
@@ -57,7 +79,7 @@ function ExchangeRate() {
           </div>
         )}
       </div>
-      <h2>Tečajnice</h2>
+      <h2 className="text-center mb-5 mt-3">Tečajnice</h2>
       <table className="table table-striped">
         <thead>
           <tr>
@@ -82,7 +104,15 @@ function ExchangeRate() {
           ))}
         </tbody>
       </table>
+
+      {/* Navigacija između stranica */}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }
+
 export default ExchangeRate;

@@ -2,9 +2,13 @@ package com.example.backend.services;
 
 import com.example.backend.model.ExchangeRate;
 import com.example.backend.repositories.ExchangeRateRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -35,8 +39,9 @@ public class ExchangeRateService {
         return List.of(exchangeRatesArray);
     }
 
-    public List<ExchangeRate> getAllExchangeRate(){
-        return exchangeRateRepository.findAll();
+    public Page<ExchangeRate> getAllExchangeRate(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return exchangeRateRepository.findAll(pageable);
     }
 
 }
