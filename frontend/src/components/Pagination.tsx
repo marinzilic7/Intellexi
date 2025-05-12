@@ -1,4 +1,4 @@
-// components/Pagination.tsx
+
 import React from "react";
 
 interface PaginationProps {
@@ -14,7 +14,7 @@ const Pagination: React.FC<PaginationProps> = ({
 }) => {
   return (
     <nav aria-label="Page navigation example">
-      <ul className="pagination justify-content-center">
+      <ul className="pagination justify-content-center flex-wrap">
         {/* Prethodna stranica */}
         <li className={`page-item ${currentPage === 0 ? "disabled" : ""}`}>
           <button
