@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignoriraj H2 bazu
+*.mv.db
+*.trace.db

@@ -35,4 +35,8 @@ public class ExchangeRateService {
         return List.of(exchangeRatesArray);
     }
 
+    public List<ExchangeRate> getAllExchangeRate(){
+        return exchangeRateRepository.findAll();
+    }
+
 }
