@@ -1,7 +1,9 @@
+import { Link } from "react-router-dom";
+
 function Navbar() {
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
+      <nav className="navbar navbar-expand-lg bg-transparent shadow-sm">
         <div className="container-fluid">
           <a className="navbar-brand" href="#">
             Intellexi
@@ -20,23 +22,27 @@ function Navbar() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
+                <Link to="/" className="nav-link active" aria-current="page">
                   Tečajnice
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
+                <Link
+                  to="/calculator"
+                  className="nav-link active"
+                  aria-current="page"
+                >
                   Kalkulator
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link active" aria-current="page" href="#">
+               
+                <Link className="nav-link active" to="/graph">
                   Grafički prikaz
-                </a>
+                </Link>
               </li>
-            
+
             </ul>
-           
           </div>
         </div>
       </nav>
