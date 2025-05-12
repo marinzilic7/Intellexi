@@ -22,7 +22,7 @@ public class ExchangeRateController {
         return "Podaci su uspješno dohvaćeni i spremljeni u bazu!";
     }
 
-    @GetMapping("/exchangeRates")
+    @GetMapping("/rates")
     public List<ExchangeRate> getAllExchangeRates(){
         return exchangeRateService.getAllExchangeRate();
     }
