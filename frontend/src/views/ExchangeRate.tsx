@@ -18,20 +18,28 @@ function ExchangeRate() {
     srednji_tecaj: string;
   }
 
+  // Tečajnice
   const [exchangeRates, setExchangeRates] = useState<ExchangeRate[]>([]);
   const [filteredRates, setFilteredRates] = useState<ExchangeRate[]>([]);
+
+  //Poruke
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
+  // Paginacija 
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+
+  // Filteri po datumu
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [isFiltering, setIsFiltering] = useState(false);
 
+  // Filteri po sifri valute
   const [currencyCode, setCurrencyCode] = useState("");
 
+  // Filteri po valuti
   const [currency, setCurrency] = useState("");
 
   const formatDate = (isoDate: string) => {
