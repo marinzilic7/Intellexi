@@ -236,6 +236,7 @@ function ExchangeRate() {
             <th className="text-center">Kupovni tečaj</th>
             <th className="text-center">Srednji tečaj</th>
             <th className="text-center">Prodajni tečaj</th>
+            <th className="text-center">Detalji</th>
             <th className="text-center">Uredi</th>
             <th className="text-center">Izbrisi</th>
           </tr>
@@ -243,8 +244,8 @@ function ExchangeRate() {
         <tbody>
           {(isFiltering ? currentFilteredRates : exchangeRates).map(
             (rate, index) => (
-              <tr key={index} onClick={() => handleClick(rate.id)} style={{ cursor: "pointer" }}>
-                <td className="text-center">
+              <tr key={index} >
+                <td className="text-center" onClick={() => handleClick(rate.id)} style={{ cursor: "pointer" }}>
                   {formatDate(rate.datumPrimjene)}
                 </td>
                 <td className="text-center">{rate.sifraValute}</td>
@@ -252,10 +253,16 @@ function ExchangeRate() {
                 <td className="text-center">{rate.kupovni_tecaj}</td>
                 <td className="text-center">{rate.srednji_tecaj}</td>
                 <td className="text-center">{rate.prodajni_tecaj}</td>
+                
+                <td className="text-center" onClick={() => handleClick(rate.id)} style={{ cursor: "pointer" }}>
+                  <button  className="btn btn-sm btn-primary">
+                    Detalji
+                  </button>
+                </td>
                 <td>
                   <button className="btn btn-sm btn-dark ms-5">
                     <Link
-                      to={`/details/${rate.id}`}
+                      to={`/edit/${rate.id}`}
                       className="text-light text-decoration-none"
                     >
                       Uredi

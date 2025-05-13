@@ -6,6 +6,7 @@ import Calculator from "./views/Calculator";
 import Graph from "./views/Graph";
 import Details from "./views/Details";
 import AddRate from "./views/AddRate";
+import UpdateRate from "./views/UpdateRate";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/graph" element={<Graph />} />
           <Route path="/details/:id" element={<Details />} />
           <Route path="/rates" element={<AddRate />} />
+          <Route path="/edit/:id" element={<UpdateRate/>} />
         </Routes>
       </Router>
     </>
