@@ -20,7 +20,7 @@ const FilterForm: React.FC<FilterFormProps> = ({
   onReset,
 }) => {
   return (
-    <div className="mb-4 d-flex align-items-center flex-wrap gap-3">
+    <div className="d-flex jusify-content-between align-items-center gap-3">
       <div>
         <label>Od: </label>
         <input
@@ -39,11 +39,11 @@ const FilterForm: React.FC<FilterFormProps> = ({
           onChange={onEndDateChange}
         />
       </div>
-      <div className="d-flex gap-2 align-items-end">
-        <button className="btn btn-primary" onClick={onFilter}>
+      <div className="d-flex gap-2 align-items-center">
+        <button className="btn btn-primary mt-4 btn-sm" onClick={onFilter}>
           Filtriraj
         </button>
-        <button className="btn btn-secondary" onClick={onReset}>
+        <button className="btn btn-secondary mt-4 btn-sm" onClick={onReset}>
           Poništi
         </button>
       </div>

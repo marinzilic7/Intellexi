@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ExchangeRateService {
@@ -56,6 +57,26 @@ public class ExchangeRateService {
         } catch (Exception e) {
             throw new RuntimeException("Greška prilikom dohvaćanja podataka s API-ja", e);
         }
+    }
+
+
+
+    public List<String> fetchCurrencyCode(){
+        RestTemplate restTemplate = new RestTemplate();
+
+        ExchangeRate[] response = restTemplate.getForObject(HNB_API, ExchangeRate[].class);
+
+        if(response == null){
+            return List.of();
+
+
+        }
+
+        return List.of(response).stream()
+                .map(ExchangeRate::getsifraValute)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
     }
 
 

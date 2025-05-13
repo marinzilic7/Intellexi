@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Pagination from "../components/Pagination";
 import FilterForm from "../components/FilterForm";
+import CurrencyCodeFilter from "../components/CurrencyCodeFilter";
 import axios from "axios";
 
 function ExchangeRate() {
@@ -17,7 +18,7 @@ function ExchangeRate() {
   }
 
   const [exchangeRates, setExchangeRates] = useState<ExchangeRate[]>([]);
-  const [filteredRates, setFilteredRates] = useState<ExchangeRate[]>([]); // New state for filtered results
+  const [filteredRates, setFilteredRates] = useState<ExchangeRate[]>([]);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
@@ -27,6 +28,8 @@ function ExchangeRate() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [isFiltering, setIsFiltering] = useState(false);
+
+  const [currencyCode, setCurrencyCode] = useState("");
 
   const formatDate = (isoDate: string) => {
     const [year, month, day] = isoDate.split("-");
@@ -49,12 +52,10 @@ function ExchangeRate() {
     let apiStartDate = startDate;
     let apiEndDate = endDate;
 
-    
     if (!apiStartDate && apiEndDate) {
       apiStartDate = "2023-01-01";
     }
 
-    
     if (apiStartDate && !apiEndDate) {
       const today = new Date();
       const formattedToday = today.toISOString().split("T")[0]; // format: YYYY-MM-DD
@@ -69,10 +70,18 @@ function ExchangeRate() {
         params: { startDate: apiStartDate, endDate: apiEndDate },
       })
       .then((response) => {
-        setFilteredRates(response.data); 
+        let data = response.data;
+
+        if (currencyCode) {
+          data = data.filter(
+            (rate: ExchangeRate) => rate.sifraValute === currencyCode
+          );
+        }
+
+        setFilteredRates(data);
         setIsFiltering(true);
-        setCurrentPage(0); 
-        setError(false); 
+        setCurrentPage(0);
+        setError(false);
       })
       .catch((err) => {
         console.error("Greška pri dohvaćanju podataka:", err);
@@ -87,7 +96,10 @@ function ExchangeRate() {
   }, [currentPage]);
 
   const handlePageChange = (page: number) => {
-    if (page >= 0 && page < (isFiltering ? Math.ceil(filteredRates.length / 10) : totalPages)) {
+    if (
+      page >= 0 &&
+      page < (isFiltering ? Math.ceil(filteredRates.length / 10) : totalPages)
+    ) {
       setCurrentPage(page);
     }
   };
@@ -100,16 +112,34 @@ function ExchangeRate() {
     setStartDate("");
     setEndDate("");
     setIsFiltering(false);
-    setFilteredRates([]); 
+    setFilteredRates([]);
     fetchFromDatabase();
+    setCurrencyCode("");
   };
 
   // Pagination variables
   const itemsPerPage = 10;
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentFilteredRates = filteredRates.slice(indexOfFirstItem, indexOfLastItem);
+  const currentFilteredRates = filteredRates.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
   const filteredTotalPages = Math.ceil(filteredRates.length / itemsPerPage);
+
+  const onCurrencyCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCurrencyCode = e.target.value;
+    setCurrencyCode(selectedCurrencyCode);
+    setCurrentPage(0);
+  };
+
+  useEffect(() => {
+    if (currencyCode) {
+      fetchFromApi();
+    } else if (isFiltering) {
+      handleReset();
+    }
+  }, [currencyCode]);
 
   return (
     <div className="container mt-4">
@@ -127,14 +157,21 @@ function ExchangeRate() {
 
       <h2 className="text-center mb-5 mt-3">Tečajnice</h2>
 
-      <FilterForm
-        startDate={startDate}
-        endDate={endDate}
-        onStartDateChange={(e) => setStartDate(e.target.value)}
-        onEndDateChange={(e) => setEndDate(e.target.value)}
-        onFilter={handleFilter}
-        onReset={handleReset}
-      />
+      <div className="mb-4 d-flex align-items-center justify-content-evenly gap-3">
+        <FilterForm
+          startDate={startDate}
+          endDate={endDate}
+          onStartDateChange={(e) => setStartDate(e.target.value)}
+          onEndDateChange={(e) => setEndDate(e.target.value)}
+          onFilter={handleFilter}
+          onReset={handleReset}
+        />
+
+        <CurrencyCodeFilter
+          currencyCode={currencyCode}
+          onCurrencyCodeChange={onCurrencyCodeChange}
+        />
+      </div>
 
       <table className="table table-striped">
         <thead>
@@ -148,16 +185,20 @@ function ExchangeRate() {
           </tr>
         </thead>
         <tbody>
-          {(isFiltering ? currentFilteredRates : exchangeRates).map((rate, index) => (
-            <tr key={index}>
-              <td className="text-center">{formatDate(rate.datumPrimjene)}</td>
-              <td className="text-center">{rate.sifraValute}</td>
-              <td className="text-center">{rate.valuta}</td>
-              <td className="text-center">{rate.kupovni_tecaj}</td>
-              <td className="text-center">{rate.srednji_tecaj}</td>
-              <td className="text-center">{rate.prodajni_tecaj}</td>
-            </tr>
-          ))}
+          {(isFiltering ? currentFilteredRates : exchangeRates).map(
+            (rate, index) => (
+              <tr key={index}>
+                <td className="text-center">
+                  {formatDate(rate.datumPrimjene)}
+                </td>
+                <td className="text-center">{rate.sifraValute}</td>
+                <td className="text-center">{rate.valuta}</td>
+                <td className="text-center">{rate.kupovni_tecaj}</td>
+                <td className="text-center">{rate.srednji_tecaj}</td>
+                <td className="text-center">{rate.prodajni_tecaj}</td>
+              </tr>
+            )
+          )}
         </tbody>
       </table>
 
