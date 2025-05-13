@@ -133,7 +133,7 @@ public class ExchangeRateService {
             existingRate.setKupovni_tecaj(updatedRateDTO.getKupovni_tecaj());
             existingRate.setSrednji_tecaj(updatedRateDTO.getSrednji_tecaj());
             existingRate.setProdajni_tecaj(updatedRateDTO.getProdajni_tecaj());
-            
+
             return exchangeRateRepository.save(existingRate);
         });
     }

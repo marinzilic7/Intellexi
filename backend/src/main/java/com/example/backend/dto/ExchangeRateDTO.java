@@ -1,6 +1,8 @@
 package com.example.backend.dto;
 
 
+import com.example.backend.deserializer.CustomDoubleDeserializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,14 +19,17 @@ public class ExchangeRateDTO {
     @NotNull(message = "Datum primjene je obavezan")
     private LocalDate datumPrimjene;
 
+    @JsonDeserialize(using = CustomDoubleDeserializer.class)
     @NotNull(message = "Kupovni tečaj je obavezan")
     @DecimalMin(value = "0.0", inclusive = false, message = "Kupovni tečaj mora biti veći od 0")
     private Double kupovni_tecaj;
 
+    @JsonDeserialize(using = CustomDoubleDeserializer.class)
     @NotNull(message = "Srednji tečaj je obavezan")
     @DecimalMin(value = "0.0", inclusive = false, message = "Srednji tečaj mora biti veći od 0")
     private Double srednji_tecaj;
 
+    @JsonDeserialize(using = CustomDoubleDeserializer.class)
     @NotNull(message = "Prodajni tečaj je obavezan")
     @DecimalMin(value = "0.0", inclusive = false, message = "Prodajni tečaj mora biti veći od 0")
     private Double prodajni_tecaj;
