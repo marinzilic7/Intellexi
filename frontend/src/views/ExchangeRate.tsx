@@ -227,7 +227,7 @@ function ExchangeRate() {
         />
       </div>
 
-      <table className="table table-striped">
+      <table className="table table-striped table-bordered table-hover">
         <thead>
           <tr>
             <th className="text-center">Datum primjene</th>
@@ -236,6 +236,8 @@ function ExchangeRate() {
             <th className="text-center">Kupovni tečaj</th>
             <th className="text-center">Srednji tečaj</th>
             <th className="text-center">Prodajni tečaj</th>
+            <th className="text-center">Uredi</th>
+            <th className="text-center">Izbrisi</th>
           </tr>
         </thead>
         <tbody>
@@ -250,6 +252,26 @@ function ExchangeRate() {
                 <td className="text-center">{rate.kupovni_tecaj}</td>
                 <td className="text-center">{rate.srednji_tecaj}</td>
                 <td className="text-center">{rate.prodajni_tecaj}</td>
+                <td>
+                  <button className="btn btn-sm btn-dark ms-5">
+                    <Link
+                      to={`/details/${rate.id}`}
+                      className="text-light text-decoration-none"
+                    >
+                      Uredi
+                    </Link>
+                  </button>
+                </td>
+                <td className="d-flex justify-content-center">
+                   <button className="btn btn-sm btn-danger ms-2">
+                    <Link
+                      to={`/delete/${rate.id}`}
+                      className="text-light text-decoration-none"
+                    >
+                      Obriši
+                    </Link>
+                  </button>
+                </td>
               </tr>
             )
           )}
