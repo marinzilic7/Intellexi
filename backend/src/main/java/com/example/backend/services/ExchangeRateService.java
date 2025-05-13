@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,10 +31,17 @@ public class ExchangeRateService {
         List<ExchangeRate> exchangeRates = fetchExchangeRates();
 
         for (ExchangeRate exchangeRate : exchangeRates) {
-            if (!exchangeRateRepository.existsBysifraValute(exchangeRate.getsifraValute())) {
+            if (!exchangeRateRepository.existsBySifraValuteAndDatumPrimjene(
+                    exchangeRate.getsifraValute(), exchangeRate.getDatumPrimjene())) {
                 exchangeRateRepository.save(exchangeRate);
             }
         }
+    }
+
+    @Scheduled(cron = "0 30  16 * * *") // svaki dan u 16:30
+    public void scheduleFetchExchangeRates() {
+        fetchApi();
+        System.out.println("Uspjesno dodani podaci za danasnji dan!");
     }
 
     private List<ExchangeRate> fetchExchangeRates() {

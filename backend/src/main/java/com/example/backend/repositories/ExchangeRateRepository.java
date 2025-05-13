@@ -13,7 +13,8 @@ import java.util.List;
 
 public interface ExchangeRateRepository  extends JpaRepository<ExchangeRate, Long> {
 
-    boolean existsBysifraValute(String sifraValute);
+    boolean existsBySifraValuteAndDatumPrimjene(String sifraValute, LocalDate datumPrimjene);
+
     List<ExchangeRate> findAll();
 
 
