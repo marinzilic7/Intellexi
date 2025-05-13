@@ -1,5 +1,6 @@
 package com.example.backend.services;
 
+import com.example.backend.dto.ExchangeRateDTO;
 import com.example.backend.model.ExchangeRate;
 import com.example.backend.repositories.ExchangeRateRepository;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -97,6 +99,28 @@ public class ExchangeRateService {
     public ExchangeRate getExchangeRateById(Long id) {
         return exchangeRateRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Tečajnica s ID-em " + id + " nije pronađena."));
+    }
+
+
+    public ExchangeRate createRate(ExchangeRateDTO dto) {
+        // Provjeri postoji li već tečaj za tu valutu i datum
+        boolean exists = exchangeRateRepository.existsBySifraValuteAndDatumPrimjene(
+                dto.getSifraValute(), dto.getDatumPrimjene()
+        );
+
+        if (exists) {
+            throw new IllegalArgumentException("Već postoji tečaj za ovu valutu i datum.");
+        }
+
+        ExchangeRate rate = new ExchangeRate();
+        rate.setDatum_primjene(dto.getDatumPrimjene());
+        rate.setSifra_valute(dto.getSifraValute());
+        rate.setValuta(dto.getValuta());
+        rate.setKupovni_tecaj(dto.getKupovni_tecaj());
+        rate.setSrednji_tecaj(dto.getSrednji_tecaj());
+        rate.setProdajni_tecaj(dto.getProdajni_tecaj());
+
+        return exchangeRateRepository.save(rate);
     }
 
 
