@@ -29,6 +29,7 @@ function UpdateRate() {
   });
 
   const [errors, setErrors] = useState<ErrorData>({});
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     axios
@@ -52,7 +53,13 @@ function UpdateRate() {
     axios
       .put(`http://localhost:8080/rates/${id}`, formData)
       .then(() => {
-        navigate("/");
+         setSuccess(true);
+        setTimeout(() => {
+          setSuccess(false);
+          navigate("/");
+        }, 3000);
+       
+        
       })
       .catch((err) => {
         if (err.response && err.response.data) {
@@ -65,6 +72,15 @@ function UpdateRate() {
 
   return (
     <div className="container">
+        {success && (
+            <div
+            className="alert alert-success w-25 position-absolute end-0 top-0 mt-5 me-5 text-center"
+            role="alert"
+            >
+            Tečajnica je uspješno uređena
+            </div>
+        )}
+
       <h3 className="text-center mt-5 mb-5">Uredi tečajnicu</h3>
       <form onSubmit={handleSubmit} className="w-50 mx-auto">
         {[
