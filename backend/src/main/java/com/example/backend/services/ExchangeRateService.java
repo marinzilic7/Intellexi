@@ -148,5 +148,13 @@ public class ExchangeRateService {
         return exchangeRateRepository.existsBySifraValuteAndDatumPrimjene(sifraValute, datum);
     }
 
+    public boolean deleteExchangeRate(Long id) {
+        if (exchangeRateRepository.existsById(id)) {
+            exchangeRateRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
 
 }

@@ -29,7 +29,7 @@ function ExchangeRate() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
-  // Paginacija 
+  // Paginacija
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
@@ -45,7 +45,7 @@ function ExchangeRate() {
   // Filteri po valuti
   const [currency, setCurrency] = useState("");
 
-  //Uvjeti 
+  //Uvjeti
 
   const [isApi, setApi] = useState(true);
 
@@ -94,10 +94,8 @@ function ExchangeRate() {
           data = data.filter(
             (rate: ExchangeRate) => rate.sifraValute === currencyCode
           );
-        }else if (currency) {
-          data = data.filter(
-            (rate: ExchangeRate) => rate.valuta === currency
-          ); 
+        } else if (currency) {
+          data = data.filter((rate: ExchangeRate) => rate.valuta === currency);
         }
 
         setFilteredRates(data);
@@ -163,7 +161,7 @@ function ExchangeRate() {
     const selectedCurrency = e.target.value;
     setCurrency(selectedCurrency);
     setCurrentPage(0);
-  }
+  };
 
   useEffect(() => {
     if (currency) {
@@ -181,11 +179,31 @@ function ExchangeRate() {
     }
   }, [currencyCode]);
 
-  
   const navigate = useNavigate();
 
   const handleClick = (id: number) => {
     navigate(`/details/${id}`);
+  };
+
+  const deleteRate = async (id: number) => {
+    if (!window.confirm("Jeste li sigurni da želite obrisati ovu tečajnicu?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/rates/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        setExchangeRates((prev) => prev.filter((rate) => rate.id !== id));
+      } else {
+        alert("Greška prilikom brisanja!");
+      }
+    } catch (error) {
+      console.error("Greška:", error);
+      alert("Došlo je do greške!");
+    }
   };
 
   return (
@@ -205,12 +223,11 @@ function ExchangeRate() {
       <h2 className="text-center mb-5 mt-3">Tečajnice</h2>
 
       <div className="d-flex justify-content-center mb-4">
-        <button className="btn btn-primary" ><Link
-                  to="/rates"
-                  className="text-light text-decoration-none"
-                >
-                  Kreiranje tečajnice
-                </Link></button>
+        <button className="btn btn-primary">
+          <Link to="/rates" className="text-light text-decoration-none">
+            Kreiranje tečajnice
+          </Link>
+        </button>
       </div>
 
       <div className="mb-4 d-flex align-items-center justify-content-evenly gap-3">
@@ -243,21 +260,24 @@ function ExchangeRate() {
             <th className="text-center">Kupovni tečaj</th>
             <th className="text-center">Srednji tečaj</th>
             <th className="text-center">Prodajni tečaj</th>
-             {isApi && (
-            <>
-              <th className="text-center">Detalji</th>
-              <th className="text-center">Uredi</th>
-              <th className="text-center">Izbrisi</th>
-            </>
+            {isApi && (
+              <>
+                <th className="text-center">Detalji</th>
+                <th className="text-center">Uredi</th>
+                <th className="text-center">Izbrisi</th>
+              </>
             )}
-            
           </tr>
         </thead>
         <tbody>
           {(isFiltering ? currentFilteredRates : exchangeRates).map(
             (rate, index) => (
-              <tr key={index} >
-                <td className="text-center" onClick={() => handleClick(rate.id)} style={{ cursor: "pointer" }}>
+              <tr key={index}>
+                <td
+                  className="text-center"
+                  onClick={() => handleClick(rate.id)}
+                  style={{ cursor: "pointer" }}
+                >
                   {formatDate(rate.datumPrimjene)}
                 </td>
                 <td className="text-center">{rate.sifraValute}</td>
@@ -265,36 +285,38 @@ function ExchangeRate() {
                 <td className="text-center">{rate.kupovni_tecaj}</td>
                 <td className="text-center">{rate.srednji_tecaj}</td>
                 <td className="text-center">{rate.prodajni_tecaj}</td>
-                
+
                 {isApi && (
-                <>
-                <td className="text-center" onClick={() => handleClick(rate.id)} style={{ cursor: "pointer" }}>
-                  <button  className="btn btn-sm btn-primary">
-                    Detalji
-                  </button>
-                </td>
-                <td>
-                  <button className="btn btn-sm btn-dark ms-5">
-                    <Link
-                      to={`/edit/${rate.id}`}
-                      className="text-light text-decoration-none"
+                  <>
+                    <td
+                      className="text-center"
+                      onClick={() => handleClick(rate.id)}
+                      style={{ cursor: "pointer" }}
                     >
-                      Uredi
-                    </Link>
-                  </button>
-                </td>
-                
-                <td className="d-flex justify-content-center" >
-                   <button className="btn btn-sm btn-danger ms-2">
-                    <Link
-                      to={`/delete/${rate.id}`}
-                      className="text-light text-decoration-none"
-                    >
-                      Obriši
-                    </Link>
-                  </button>
-                </td>
-                </>
+                      <button className="btn btn-sm btn-primary">
+                        Detalji
+                      </button>
+                    </td>
+                    <td>
+                      <button className="btn btn-sm btn-dark ms-5">
+                        <Link
+                          to={`/edit/${rate.id}`}
+                          className="text-light text-decoration-none"
+                        >
+                          Uredi
+                        </Link>
+                      </button>
+                    </td>
+
+                    <td className="d-flex justify-content-center">
+                      <button
+                        className="btn btn-sm btn-danger ms-2"
+                        onClick={() => deleteRate(rate.id)}
+                      >
+                        Izbrisi
+                      </button>
+                    </td>
+                  </>
                 )}
               </tr>
             )

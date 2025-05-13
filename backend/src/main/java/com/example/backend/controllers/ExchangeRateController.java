@@ -124,4 +124,14 @@ public class ExchangeRateController {
 
 
     }
+
+    @DeleteMapping("/rates/{id}")
+    public ResponseEntity<?> deleteExchangeRate(@PathVariable Long id) {
+        boolean deleted = exchangeRateService.deleteExchangeRate(id);
+        if (deleted) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
