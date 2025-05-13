@@ -43,15 +43,25 @@ public class ExchangeRateController {
     }
 
     @GetMapping("/getCurrencyCode")
-    public ResponseEntity<List<String>> getAllCurrencies() {
+    public ResponseEntity<List<String>> getCurrenciesCode() {
         List<String> currencies = exchangeRateService.fetchCurrencyCode();
 
-        // Ispis u IntelliJ konzoli
+
         System.out.println("Dostupne valute iz HNB API-ja:");
         currencies.forEach(System.out::println);
 
         return ResponseEntity.ok(currencies);
     }
 
+    @GetMapping("/getCurrency")
+    public ResponseEntity<List<String>> getAllCurrencies() {
+        List<String> currencies = exchangeRateService.fetchCurrency();
+
+
+        System.out.println("Dostupne valute iz HNB API-ja:");
+        currencies.forEach(System.out::println);
+
+        return ResponseEntity.ok(currencies);
+    }
 
 }

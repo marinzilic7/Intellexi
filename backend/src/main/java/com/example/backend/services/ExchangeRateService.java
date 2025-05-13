@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ExchangeRateService {
@@ -66,14 +67,19 @@ public class ExchangeRateService {
 
         ExchangeRate[] response = restTemplate.getForObject(HNB_API, ExchangeRate[].class);
 
-        if(response == null){
-            return List.of();
-
-
-        }
-
-        return List.of(response).stream()
+        return Stream.of(response)
                 .map(ExchangeRate::getsifraValute)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public List<String> fetchCurrency(){
+        RestTemplate restTemplate = new RestTemplate();
+        ExchangeRate[] response = restTemplate.getForObject(HNB_API, ExchangeRate[].class);
+
+        return Stream.of(response)
+                .map(ExchangeRate::getValuta)
                 .distinct()
                 .sorted()
                 .collect(Collectors.toList());

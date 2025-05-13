@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Pagination from "../components/Pagination";
 import FilterForm from "../components/FilterForm";
 import CurrencyCodeFilter from "../components/CurrencyCodeFilter";
+import CurrencyFilter from "../components/CurrencyFilter";
 import axios from "axios";
 
 function ExchangeRate() {
@@ -30,6 +31,8 @@ function ExchangeRate() {
   const [isFiltering, setIsFiltering] = useState(false);
 
   const [currencyCode, setCurrencyCode] = useState("");
+
+  const [currency, setCurrency] = useState("");
 
   const formatDate = (isoDate: string) => {
     const [year, month, day] = isoDate.split("-");
@@ -76,6 +79,10 @@ function ExchangeRate() {
           data = data.filter(
             (rate: ExchangeRate) => rate.sifraValute === currencyCode
           );
+        }else if (currency) {
+          data = data.filter(
+            (rate: ExchangeRate) => rate.valuta === currency
+          ); 
         }
 
         setFilteredRates(data);
@@ -115,6 +122,7 @@ function ExchangeRate() {
     setFilteredRates([]);
     fetchFromDatabase();
     setCurrencyCode("");
+    setCurrency("");
   };
 
   // Pagination variables
@@ -132,6 +140,20 @@ function ExchangeRate() {
     setCurrencyCode(selectedCurrencyCode);
     setCurrentPage(0);
   };
+
+  const onCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCurrency = e.target.value;
+    setCurrency(selectedCurrency);
+    setCurrentPage(0);
+  }
+
+  useEffect(() => {
+    if (currency) {
+      fetchFromApi();
+    } else if (isFiltering) {
+      handleReset();
+    }
+  }, [currency]);
 
   useEffect(() => {
     if (currencyCode) {
@@ -170,6 +192,11 @@ function ExchangeRate() {
         <CurrencyCodeFilter
           currencyCode={currencyCode}
           onCurrencyCodeChange={onCurrencyCodeChange}
+        />
+
+        <CurrencyFilter
+          currency={currency}
+          onCurrencyChange={onCurrencyChange}
         />
       </div>
 
