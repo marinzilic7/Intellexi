@@ -5,6 +5,7 @@ import CurrencyCodeFilter from "../components/CurrencyCodeFilter";
 import CurrencyFilter from "../components/CurrencyFilter";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function ExchangeRate() {
   interface ExchangeRate {
@@ -195,6 +196,15 @@ function ExchangeRate() {
       )}
 
       <h2 className="text-center mb-5 mt-3">Tečajnice</h2>
+
+      <div className="d-flex justify-content-center mb-4">
+        <button className="btn btn-primary" ><Link
+                  to="/rates"
+                  className="text-light text-decoration-none"
+                >
+                  Kreiranje tečajnice
+                </Link></button>
+      </div>
 
       <div className="mb-4 d-flex align-items-center justify-content-evenly gap-3">
         <FilterForm

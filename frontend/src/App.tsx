@@ -5,6 +5,7 @@ import ExchangeRate from "./views/ExchangeRate";
 import Calculator from "./views/Calculator";
 import Graph from "./views/Graph";
 import Details from "./views/Details";
+import AddRate from "./views/AddRate";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/calculator" element={<Calculator />} />
           <Route path="/graph" element={<Graph />} />
           <Route path="/details/:id" element={<Details />} />
+          <Route path="/rates" element={<AddRate />} />
         </Routes>
       </Router>
     </>
