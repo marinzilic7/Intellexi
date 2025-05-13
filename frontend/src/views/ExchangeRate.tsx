@@ -3,10 +3,12 @@ import Pagination from "../components/Pagination";
 import FilterForm from "../components/FilterForm";
 import CurrencyCodeFilter from "../components/CurrencyCodeFilter";
 import CurrencyFilter from "../components/CurrencyFilter";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function ExchangeRate() {
   interface ExchangeRate {
+    id: number;
     brojTecajnice: string;
     datumPrimjene: string;
     drzava: string;
@@ -171,6 +173,13 @@ function ExchangeRate() {
     }
   }, [currencyCode]);
 
+  
+  const navigate = useNavigate();
+
+  const handleClick = (id: number) => {
+    navigate(`/details/${id}`);
+  };
+
   return (
     <div className="container mt-4">
       {success && (
@@ -222,7 +231,7 @@ function ExchangeRate() {
         <tbody>
           {(isFiltering ? currentFilteredRates : exchangeRates).map(
             (rate, index) => (
-              <tr key={index}>
+              <tr key={index} onClick={() => handleClick(rate.id)} style={{ cursor: "pointer" }}>
                 <td className="text-center">
                   {formatDate(rate.datumPrimjene)}
                 </td>

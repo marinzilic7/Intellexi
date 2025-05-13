@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -91,6 +92,11 @@ public class ExchangeRateService {
                 .distinct()
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    public ExchangeRate getExchangeRateById(Long id) {
+        return exchangeRateRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Tečajnica s ID-em " + id + " nije pronađena."));
     }
 
 

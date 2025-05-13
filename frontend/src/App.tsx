@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import ExchangeRate from "./views/ExchangeRate";
 import Calculator from "./views/Calculator";
 import Graph from "./views/Graph";
+import Details from "./views/Details";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<ExchangeRate />} />
           <Route path="/calculator" element={<Calculator />} />
           <Route path="/graph" element={<Graph />} />
+          <Route path="/details/:id" element={<Details />} />
         </Routes>
       </Router>
     </>
