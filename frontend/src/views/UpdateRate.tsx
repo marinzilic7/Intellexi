@@ -50,7 +50,7 @@ function UpdateRate() {
     setErrors({});
 
     axios
-      .put(`http://localhost:8080/exchange-rates/${id}`, formData)
+      .put(`http://localhost:8080/rates/${id}`, formData)
       .then(() => {
         navigate("/");
       })

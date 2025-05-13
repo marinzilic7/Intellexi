@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 
+import javax.sound.midi.InvalidMidiDataException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -125,19 +126,27 @@ public class ExchangeRateService {
     }
 
     public Optional<ExchangeRate> updateExchangeRate(Long id, ExchangeRateDTO updatedRateDTO) {
-        return exchangeRateRepository.findById(id).map(existingRate -> {
 
-            existingRate.setDatum_primjene(updatedRateDTO.getDatumPrimjene());
-            existingRate.setSifra_valute(updatedRateDTO.getSifraValute());
-            existingRate.setValuta(updatedRateDTO.getValuta());
-            existingRate.setKupovni_tecaj(updatedRateDTO.getKupovni_tecaj());
-            existingRate.setSrednji_tecaj(updatedRateDTO.getSrednji_tecaj());
-            existingRate.setProdajni_tecaj(updatedRateDTO.getProdajni_tecaj());
 
-            return exchangeRateRepository.save(existingRate);
-        });
+           return exchangeRateRepository.findById(id).map(existingRate -> {
+
+               existingRate.setDatum_primjene(updatedRateDTO.getDatumPrimjene());
+               existingRate.setSifra_valute(updatedRateDTO.getSifraValute());
+               existingRate.setValuta(updatedRateDTO.getValuta());
+               existingRate.setKupovni_tecaj(updatedRateDTO.getKupovni_tecaj());
+               existingRate.setSrednji_tecaj(updatedRateDTO.getSrednji_tecaj());
+               existingRate.setProdajni_tecaj(updatedRateDTO.getProdajni_tecaj());
+
+               return exchangeRateRepository.save(existingRate);
+           });
+
+
+
     }
 
+    public boolean existsByDatumPrimjeneAndNotId(String sifraValute, LocalDate datum) {
+        return exchangeRateRepository.existsBySifraValuteAndDatumPrimjene(sifraValute, datum);
+    }
 
 
 }

@@ -94,7 +94,7 @@ public class ExchangeRateController {
         }
     }
 
-    @PutMapping("/exchange-rates/{id}")
+    @PutMapping("/rates/{id}")
     public ResponseEntity<?> updateExchangeRate(
             @PathVariable Long id,
             @Valid @RequestBody ExchangeRateDTO dto,
@@ -108,8 +108,20 @@ public class ExchangeRateController {
             return ResponseEntity.badRequest().body(errors);
         }
 
-        Optional<ExchangeRate> updated = exchangeRateService.updateExchangeRate(id, dto  );
-        return updated.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        boolean datumPostoji = exchangeRateService.existsByDatumPrimjeneAndNotId(dto.getSifraValute(), dto.getDatumPrimjene());
+        if (datumPostoji) {
+            result.rejectValue("datumPrimjene", "duplicate", "Tečajnica za taj datum već postoji.");
+            Map<String, String> errors = new HashMap<>();
+            result.getFieldErrors().forEach(error ->
+                    errors.put(error.getField(), error.getDefaultMessage())
+            );
+            return ResponseEntity.badRequest().body(errors);
+        }else{
+            Optional<ExchangeRate> updated = exchangeRateService.updateExchangeRate(id, dto  );
+            return updated.map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        }
+
+
     }
 }
