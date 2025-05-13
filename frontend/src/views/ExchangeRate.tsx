@@ -45,6 +45,10 @@ function ExchangeRate() {
   // Filteri po valuti
   const [currency, setCurrency] = useState("");
 
+  //Uvjeti 
+
+  const [isApi, setApi] = useState(true);
+
   const formatDate = (isoDate: string) => {
     const [year, month, day] = isoDate.split("-");
     return `${day}.${month}.${year}`;
@@ -99,6 +103,7 @@ function ExchangeRate() {
         setFilteredRates(data);
         setIsFiltering(true);
         setCurrentPage(0);
+        setApi(false);
         setError(false);
       })
       .catch((err) => {
@@ -110,6 +115,7 @@ function ExchangeRate() {
   useEffect(() => {
     if (!isFiltering) {
       fetchFromDatabase();
+      setApi(true);
     }
   }, [currentPage]);
 
@@ -134,6 +140,7 @@ function ExchangeRate() {
     fetchFromDatabase();
     setCurrencyCode("");
     setCurrency("");
+    setApi(true);
   };
 
   // Pagination variables
@@ -236,9 +243,14 @@ function ExchangeRate() {
             <th className="text-center">Kupovni tečaj</th>
             <th className="text-center">Srednji tečaj</th>
             <th className="text-center">Prodajni tečaj</th>
-            <th className="text-center">Detalji</th>
-            <th className="text-center">Uredi</th>
-            <th className="text-center">Izbrisi</th>
+             {isApi && (
+            <>
+              <th className="text-center">Detalji</th>
+              <th className="text-center">Uredi</th>
+              <th className="text-center">Izbrisi</th>
+            </>
+            )}
+            
           </tr>
         </thead>
         <tbody>
@@ -254,6 +266,8 @@ function ExchangeRate() {
                 <td className="text-center">{rate.srednji_tecaj}</td>
                 <td className="text-center">{rate.prodajni_tecaj}</td>
                 
+                {isApi && (
+                <>
                 <td className="text-center" onClick={() => handleClick(rate.id)} style={{ cursor: "pointer" }}>
                   <button  className="btn btn-sm btn-primary">
                     Detalji
@@ -269,7 +283,8 @@ function ExchangeRate() {
                     </Link>
                   </button>
                 </td>
-                <td className="d-flex justify-content-center">
+                
+                <td className="d-flex justify-content-center" >
                    <button className="btn btn-sm btn-danger ms-2">
                     <Link
                       to={`/delete/${rate.id}`}
@@ -279,6 +294,8 @@ function ExchangeRate() {
                     </Link>
                   </button>
                 </td>
+                </>
+                )}
               </tr>
             )
           )}
