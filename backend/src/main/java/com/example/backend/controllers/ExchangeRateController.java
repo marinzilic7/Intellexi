@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class ExchangeRateController {
@@ -31,7 +32,7 @@ public class ExchangeRateController {
     }
 
     @GetMapping("/rates")
-    public Page<ExchangeRate> getAllExchangeRates(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size){
+    public Page<ExchangeRate> getAllExchangeRates(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
         return exchangeRateService.getAllExchangeRate(page, size);
     }
 
@@ -69,7 +70,7 @@ public class ExchangeRateController {
     }
 
     @GetMapping("/rates/{id}")
-    public ResponseEntity<ExchangeRate> getExchangeRateById(@PathVariable Long id){
+    public ResponseEntity<ExchangeRate> getExchangeRateById(@PathVariable Long id) {
         ExchangeRate rate = exchangeRateService.getExchangeRateById(id);
         return ResponseEntity.ok(rate);
     }
@@ -91,5 +92,24 @@ public class ExchangeRateController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("error", e.getMessage()));
         }
+    }
+
+    @PutMapping("/exchange-rates/{id}")
+    public ResponseEntity<?> updateExchangeRate(
+            @PathVariable Long id,
+            @Valid @RequestBody ExchangeRateDTO dto,
+            BindingResult result
+    ) {
+        if (result.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            result.getFieldErrors().forEach(error ->
+                    errors.put(error.getField(), error.getDefaultMessage())
+            );
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        Optional<ExchangeRate> updated = exchangeRateService.updateExchangeRate(id, dto  );
+        return updated.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

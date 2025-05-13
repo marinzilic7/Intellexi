@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -121,6 +122,20 @@ public class ExchangeRateService {
         rate.setProdajni_tecaj(dto.getProdajni_tecaj());
 
         return exchangeRateRepository.save(rate);
+    }
+
+    public Optional<ExchangeRate> updateExchangeRate(Long id, ExchangeRateDTO updatedRateDTO) {
+        return exchangeRateRepository.findById(id).map(existingRate -> {
+
+            existingRate.setDatum_primjene(updatedRateDTO.getDatumPrimjene());
+            existingRate.setSifra_valute(updatedRateDTO.getSifraValute());
+            existingRate.setValuta(updatedRateDTO.getValuta());
+            existingRate.setKupovni_tecaj(updatedRateDTO.getKupovni_tecaj());
+            existingRate.setSrednji_tecaj(updatedRateDTO.getSrednji_tecaj());
+            existingRate.setProdajni_tecaj(updatedRateDTO.getProdajni_tecaj());
+            
+            return exchangeRateRepository.save(existingRate);
+        });
     }
 
 
