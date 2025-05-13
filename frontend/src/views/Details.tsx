@@ -17,7 +17,7 @@ const Details = () => {
   const [rate, setRate] = useState<Rate | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const [success, setSuccess] = useState(false); 
+  const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -48,19 +48,43 @@ const Details = () => {
   if (loading) return <p>Učitavanje...</p>;
   if (!rate) return <p>Tečajnica nije pronađena.</p>;
 
+  const deleteRate = async (id: number) => {
+    if (!window.confirm("Jeste li sigurni da želite obrisati ovu tečajnicu?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/rates/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        setRate(null);
+      } else {
+        alert("Greška prilikom brisanja!");
+      }
+    } catch (error) {
+      console.error("Greška:", error);
+      alert("Došlo je do greške!");
+    }
+  };
+
   return (
     <div>
-        <h2 className="text-center">Detalji tečajnice</h2>
-        {success && (
-            <div className="alert alert-success w-25 position-absolute end-0 top-0 mt-5 me-5 text-center" role="alert">
-                No error
-            </div>
-            )}
-        {error && (
-            <div className="alert alert-danger" role="alert">
-                Došlo je do greške prilikom učitavanja tečajnice.
-            </div>
-        )}
+      <h2 className="text-center">Detalji tečajnice</h2>
+      {success && (
+        <div
+          className="alert alert-success w-25 position-absolute end-0 top-0 mt-5 me-5 text-center"
+          role="alert"
+        >
+          No error
+        </div>
+      )}
+      {error && (
+        <div className="alert alert-danger" role="alert">
+          Došlo je do greške prilikom učitavanja tečajnice.
+        </div>
+      )}
 
       <table className="table  table-striped table-bordered">
         <thead>
@@ -71,6 +95,7 @@ const Details = () => {
             <th scope="col">Kupovni tecaj</th>
             <th scope="col">Srednji tecaj</th>
             <th scope="col">Prodajni tecaj</th>
+            <th scope="col">Izbrisi</th>
           </tr>
         </thead>
         <tbody>
@@ -81,6 +106,14 @@ const Details = () => {
             <td>{rate.kupovni_tecaj}</td>
             <td>{rate.srednji_tecaj}</td>
             <td>{rate.prodajni_tecaj}</td>
+            <td className="d-flex justify-content-center">
+              <button
+                className="btn btn-sm btn-danger ms-2"
+                onClick={() => deleteRate(rate.id)}
+              >
+                Izbrisi
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
