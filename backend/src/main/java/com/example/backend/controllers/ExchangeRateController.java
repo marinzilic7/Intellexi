@@ -147,4 +147,12 @@ public class ExchangeRateController {
         );
         return ResponseEntity.ok(result);
     }
+
+    //spremanje tecajnice od zadnjeg mjeseca u bazu
+
+    @GetMapping("/last-month")
+    public String fetchApiLastMonth() {
+        exchangeRateService.fetchApiLastMonth();
+        return "Podaci su uspješno dohvaćeni i spremljeni u bazu!";
+    }
 }

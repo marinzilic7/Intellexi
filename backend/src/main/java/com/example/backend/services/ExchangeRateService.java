@@ -2,7 +2,9 @@ package com.example.backend.services;
 
 import com.example.backend.dto.ExchangeRateDTO;
 import com.example.backend.model.ExchangeRate;
+import com.example.backend.model.GraphModel;
 import com.example.backend.repositories.ExchangeRateRepository;
+import com.example.backend.repositories.GraphRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +31,7 @@ public class ExchangeRateService {
 
     @Autowired
     private ExchangeRateRepository exchangeRateRepository;
+    private GraphRepository graphRepository;
 
     private static final String HNB_API = "https://api.hnb.hr/tecajn-eur/v3";
 
@@ -216,6 +219,23 @@ public class ExchangeRateService {
     //Punjenje tečajnica od zadnjih mjesec dana u bazu
 
 
+    private static final String HNB_API_LAST_MONTH = "https://api.hnb.hr/tecajn-eur/v3?datum-primjene-od=2024-05-14&datum-primjene-do=2025-05-14";
+
+    public void fetchApiLastMonth(){
+        List<GraphModel> graphModels = fetchExchangeRatesGraph();
+
+        for (GraphModel graphModel : graphModels) {
+            if (!graphRepository.existsBySifraValuteAndDatumPrimjene(
+                    graphModel.getSifraValute(), graphModel.getDatumPrimjene())) {
+                graphRepository.save(graphModel);
+            }
+        }
+    }
+
+    private List<GraphModel> fetchExchangeRatesGraph() {
+        GraphModel[] exchangeRatesArray = restTemplate.getForObject(HNB_API_LAST_MONTH, GraphModel[].class);
+        return List.of(exchangeRatesArray);
+    }
 
 
 }
