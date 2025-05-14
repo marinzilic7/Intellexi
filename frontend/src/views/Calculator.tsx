@@ -4,6 +4,18 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function Calculator() {
+  const [currency, setCurrency] = useState("");
+  const [currency2, setCurrency2] = useState("");
+
+  const onCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCurrency = e.target.value;
+    setCurrency(selectedCurrency);
+  };
+
+  const onCurrencyChange2 = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCurrency2 = e.target.value;
+    setCurrency2(selectedCurrency2);
+  };
   return (
     <div>
       <h1 className="text-center mt-5">Kalkulator</h1>
@@ -22,7 +34,10 @@ function Calculator() {
               />
             </div>
             <div className="ms-3 mt-2">
-              <CurrencyFilter />
+              <CurrencyFilter
+                currency={currency}
+                onCurrencyChange={onCurrencyChange}
+              />
             </div>
           </div>
           <div className="d-flex">
@@ -31,7 +46,10 @@ function Calculator() {
                 U
               </label>
               <div>
-                <CurrencyFilter currency="" onCurrencyChange={() => {}} />
+                <CurrencyFilter
+                  currency={currency2}
+                  onCurrencyChange={onCurrencyChange2}
+                />
               </div>
             </div>
           </div>
