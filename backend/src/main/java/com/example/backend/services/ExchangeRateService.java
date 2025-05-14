@@ -14,6 +14,8 @@ import org.springframework.web.client.RestTemplate;
 
 
 import javax.sound.midi.InvalidMidiDataException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -152,6 +154,62 @@ public class ExchangeRateService {
             return true;
         }
         return false;
+    }
+
+    public BigDecimal convertCurrency(BigDecimal amount, String fromCurrency, String toCurrency, String exchangeType, String date) {
+        // Ako datum nije zadan, koristiti aktualni datum
+        if (date == null || date.isEmpty()) {
+            date = getCurrentDate(); // Metoda za dohvat trenutnog datuma
+        }
+
+        // Ako vrsta tečaja nije zadan, stavljamo srednji tečaj
+        if (exchangeType == null || exchangeType.isEmpty()) {
+            exchangeType = "srednji"; // Postavljamo "srednji" kao default
+        }
+
+        // 1. Dohvati tečajeve za zadani datum
+        String url = HNB_API + "?datum-primjene-od=" + date + "&datum-primjene-do=" + date;
+        ResponseEntity<ExchangeRate[]> response = restTemplate.getForEntity(url, ExchangeRate[].class);
+        ExchangeRate[] rates = response.getBody();
+
+        if (rates == null || rates.length == 0) {
+            throw new RuntimeException("Nema dostupnih tečajeva za uneseni datum.");
+        }
+
+        //Tečaj za početnu valutu
+        ExchangeRate fromRate = findRate(rates, fromCurrency);
+        BigDecimal fromValue = getRateValue(fromRate, exchangeType);
+
+        //Tečaj za ciljnu valutu
+        ExchangeRate toRate = findRate(rates, toCurrency);
+        BigDecimal toValue = getRateValue(toRate, exchangeType);
+
+
+        BigDecimal amountInToCurrency = amount.multiply(fromValue).divide(toValue, 4, RoundingMode.HALF_UP);
+
+        return amountInToCurrency;
+    }
+
+    private String getCurrentDate() {
+        // Metoda koja vraća trenutni datum u formatu "yyyy-MM-dd"
+        LocalDate currentDate = LocalDate.now();
+        return currentDate.toString();
+    }
+
+    private ExchangeRate findRate(ExchangeRate[] rates, String currency) {
+        return Arrays.stream(rates)
+                .filter(rate -> rate.getValuta().equalsIgnoreCase(currency))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Nema tečaja za valutu: " + currency));
+    }
+
+    private BigDecimal getRateValue(ExchangeRate rate, String exchangeType) {
+        return switch (exchangeType.toLowerCase()) {
+            case "kupovni", "kupovni_tecaj" -> BigDecimal.valueOf(rate.getKupovni_tecaj());
+            case "prodajni", "prodajni_tecaj" -> BigDecimal.valueOf(rate.getProdajni_tecaj());
+            case "srednji", "srednji_tecaj" -> BigDecimal.valueOf(rate.getSrednji_tecaj());
+            default -> throw new IllegalArgumentException("Nepoznata vrsta tečaja: " + exchangeType);
+        };
     }
 
 

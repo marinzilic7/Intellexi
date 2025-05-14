@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -133,5 +134,17 @@ public class ExchangeRateController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/convert")
+    public ResponseEntity<BigDecimal> convert(@RequestBody ExchangeRateDTO request) {
+        BigDecimal result = exchangeRateService.convertCurrency(
+                request.getAmount(),
+                request.getFromCurrency(),
+                request.getToCurrency(),
+                request.getExchangeType(),
+                request.getDate()
+        );
+        return ResponseEntity.ok(result);
     }
 }

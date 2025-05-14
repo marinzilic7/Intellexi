@@ -7,6 +7,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class ExchangeRateDTO {
@@ -33,6 +34,14 @@ public class ExchangeRateDTO {
     @NotNull(message = "Prodajni tečaj je obavezan")
     @DecimalMin(value = "0.0", inclusive = false, message = "Prodajni tečaj mora biti veći od 0")
     private Double prodajni_tecaj;
+
+
+    // Polja za konverziju
+    private BigDecimal amount;
+    private String fromCurrency;
+    private String toCurrency;
+    private String exchangeType;
+    private String date;
 
     public String getSifraValute() {
         return sifraValute;
@@ -80,6 +89,46 @@ public class ExchangeRateDTO {
 
     public void setProdajni_tecaj(Double prodajni_tecaj) {
         this.prodajni_tecaj = prodajni_tecaj;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public String getFromCurrency() {
+        return fromCurrency;
+    }
+
+    public void setFromCurrency(String fromCurrency) {
+        this.fromCurrency = fromCurrency;
+    }
+
+    public String getToCurrency() {
+        return toCurrency;
+    }
+
+    public void setToCurrency(String toCurrency) {
+        this.toCurrency = toCurrency;
+    }
+
+    public String getExchangeType() {
+        return exchangeType;
+    }
+
+    public void setExchangeType(String exchangeType) {
+        this.exchangeType = exchangeType;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
 
