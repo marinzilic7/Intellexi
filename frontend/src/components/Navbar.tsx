@@ -5,9 +5,10 @@ function Navbar() {
     <>
       <nav className="navbar navbar-expand-lg bg-transparent shadow-sm">
         <div className="container-fluid">
-          <a className="navbar-brand" href="#">
-            Intellexi
-          </a>
+          <Link to="/" className="navbar-brand">
+           Intellexi
+          </Link>
+         
           <button
             className="navbar-toggler"
             type="button"
