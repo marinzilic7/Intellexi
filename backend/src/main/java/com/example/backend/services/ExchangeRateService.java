@@ -213,6 +213,8 @@ public class ExchangeRateService {
     }
 
 
+    //Punjenje tečajnica od zadnjih mjesec dana u bazu
+
 
 
 
