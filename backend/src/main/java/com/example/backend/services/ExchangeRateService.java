@@ -15,9 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.sound.midi.InvalidMidiDataException;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -155,6 +153,9 @@ public class ExchangeRateService {
         }
         return false;
     }
+
+
+
 
 
 }
