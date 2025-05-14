@@ -1,3 +1,5 @@
+import CurrencyFilter from "../components/CurrencyFilter";
+
 function Calculator() {
   return (
     <div>
@@ -16,16 +18,8 @@ function Calculator() {
                 placeholder="Unesite iznos (iz)"
               />
             </div>
-            <div className="mb-3">
-              <label htmlFor="currency" className="form-label">
-                Valuta
-              </label>
-              <select className="form-select" id="currency">
-                <option value="">Odaberite valutu</option>
-                <option value="EUR">EUR</option>
-                <option value="USD">USD</option>
-                <option value="GBP">GBP</option>
-              </select>
+            <div className="ms-3 mt-2">
+              <CurrencyFilter currency="" onCurrencyChange={() => {}} />
             </div>
           </div>
           <div className="d-flex">
@@ -40,16 +34,8 @@ function Calculator() {
                 placeholder="Unesite iznos (u)"
               />
             </div>
-            <div className="mb-3">
-              <label htmlFor="currency" className="form-label">
-                Valuta
-              </label>
-              <select className="form-select" id="currency">
-                <option value="">Odaberite valutu</option>
-                <option value="EUR">EUR</option>
-                <option value="USD">USD</option>
-                <option value="GBP">GBP</option>
-              </select>
+            <div className="ms-3 mt-2">
+              <CurrencyFilter currency="" onCurrencyChange={() => {}} />
             </div>
           </div>
           <div className="mb-3">
