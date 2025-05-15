@@ -12,8 +12,6 @@ import {
   Legend,
 } from "recharts";
 
-
-
 const Graph: React.FC = () => {
   const [currency1, setCurrency1] = useState<string>("BAM");
   const [currency2, setCurrency2] = useState<string>("USD");
