@@ -2,6 +2,7 @@ package com.example.backend.model;
 
 
 import com.example.backend.deserializer.CustomDoubleDeserializer;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
@@ -21,6 +22,7 @@ public class GraphModel {
 
     @Column(name = "datum_primjene")
     @JsonProperty("datum_primjene")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate datumPrimjene;
 
     @Column(name = "sifra_valute")

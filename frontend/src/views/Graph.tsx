@@ -1,24 +1,95 @@
-import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import CurrencyFilter from "../components/CurrencyFilter";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+} from "recharts";
 
-const data = [
-  { datum: '2024-05-01', srednji_tecaj: 7.45 },
-  { datum: '2024-05-02', srednji_tecaj: 7.42 },
-  { datum: '2024-05-03', srednji_tecaj: 7.48 },
-];
-
-
-
-function Graph() {
- return (
-    <LineChart width={800} height={400} data={data}>
-      <CartesianGrid stroke="#ccc" />
-      <XAxis dataKey="datum" />
-      <YAxis domain={['dataMin', 'dataMax']} />
-      <Tooltip />
-      <Legend />
-      <Line type="monotone" dataKey="srednji_tecaj" stroke="#8884d8" />
-    </LineChart>
-  );
+interface GraphData {
+  datum: string;
+  vrijednost: number;
+  vrijednost2: number;
 }
+
+const Graph: React.FC = () => {
+  const [currency1, setCurrency1] = useState<string>("EUR");
+  const [currency2, setCurrency2] = useState<string>("USD");
+  const [range, setRange] = useState<"week" | "month">("week");
+  const [dataForChart, setDataForChart] = useState<GraphData[]>([]);
+
+  useEffect(() => {
+    if (!currency1 || !currency2) return;
+
+    axios
+      .get<GraphData[]>("http://localhost:8080/graph", {
+        params: {
+          from: currency1,
+          to: currency2,
+          range: range,
+        },
+      })
+      .then((response) => {
+        setDataForChart(response.data);
+      })
+      .catch((error) => {
+        console.error("Greška pri dohvaćanju podataka:", error);
+      });
+  }, [currency1, currency2, range]);
+
+  return (
+    <div>
+      <div className="d-flex justify-content-center align-items-center flex-column mt-5">
+        <LineChart width={800} height={400} data={dataForChart}>
+          <CartesianGrid stroke="#ccc" />
+          <XAxis dataKey="datum" />
+          <YAxis domain={["auto", "auto"]} />
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone"
+            dataKey="vrijednost"
+            stroke="#8884d8"
+            name={currency1}
+            dot={false}
+          />
+          <Line
+            type="monotone"
+            dataKey="vrijednost2"
+            stroke="#82ca9d"
+            name={currency2}
+            dot={false}
+          />
+        </LineChart>
+      </div>
+
+      <div className="d-flex justify-content-center align-items-center gap-3 mt-5">
+        <CurrencyFilter
+          currency={currency1}
+          onCurrencyChange={(e) => setCurrency1(e.target.value)}
+        />
+
+        <CurrencyFilter
+          currency={currency2}
+          onCurrencyChange={(e) => setCurrency2(e.target.value)}
+        />
+
+        <select
+          className="form-select w-auto"
+          value={range}
+          onChange={(e) => setRange(e.target.value as "week" | "month")}
+        >
+          <option value="week">Zadnjih 7 dana</option>
+          <option value="month">Zadnjih 30 dana</option>
+        </select>
+      </div>
+    </div>
+  );
+};
+
 export default Graph;

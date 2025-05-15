@@ -10,5 +10,6 @@ import java.util.List;
 public interface GraphRepository extends JpaRepository <GraphModel, Long> {
 
     boolean existsBySifraValuteAndDatumPrimjene(String sifraValute, LocalDate datumPrimjene);
+    List<GraphModel> findByValutaAndDatumPrimjeneBetween(String valuta, LocalDate start, LocalDate end);
     List<GraphModel> findAll();
 }

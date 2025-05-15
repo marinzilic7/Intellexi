@@ -2,6 +2,7 @@ package com.example.backend.controllers;
 
 
 import com.example.backend.dto.ExchangeRateDTO;
+import com.example.backend.dto.GraphDTO;
 import com.example.backend.model.ExchangeRate;
 import com.example.backend.services.ExchangeRateService;
 import jakarta.validation.Valid;
@@ -154,5 +155,14 @@ public class ExchangeRateController {
     public String fetchApiLastMonth() {
         exchangeRateService.fetchApiLastMonth();
         return "Podaci su uspješno dohvaćeni i spremljeni u bazu!";
+    }
+
+    @GetMapping("/graph")
+    public List<GraphDTO> getGraphData(
+            @RequestParam String from,
+            @RequestParam String to,
+            @RequestParam String range // "week" ili "month"
+    ) {
+        return exchangeRateService.getComparisonData(from, to, range);
     }
 }
