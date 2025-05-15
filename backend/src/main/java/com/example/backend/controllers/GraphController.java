@@ -31,10 +31,10 @@ public class GraphController {
 
     @GetMapping("/graph")
     public List<GraphDTO> getGraphData(
-            @RequestParam String from,
-            @RequestParam String to,
-            @RequestParam String range
+            @RequestParam String currency1,
+            @RequestParam String currency2,
+            @RequestParam String choosenDate
     ) {
-        return graphService.getComparisonData(from, to, range);
+        return graphService.getComparisonData(currency1, currency2, choosenDate);
     }
 }

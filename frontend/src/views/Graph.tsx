@@ -29,9 +29,9 @@ const Graph: React.FC = () => {
     axios
       .get<GraphData[]>("http://localhost:8080/graph", {
         params: {
-          from: currency1,
-          to: currency2,
-          range: range,
+          currency1: currency1,
+          currency2: currency2,
+          choosenDate: range,
         },
       })
       .then((response) => {

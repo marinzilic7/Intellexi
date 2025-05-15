@@ -36,7 +36,7 @@ public class GraphService {
 
     public void fetchApiLastMonth(){
         List<GraphModel> graphModels = fetchExchangeRatesGraph();
-        
+
         for (GraphModel graphModel : graphModels) {
             if (!graphRepository.existsBySifraValuteAndDatumPrimjene(
                     graphModel.getSifraValute(), graphModel.getDatumPrimjene())) {
@@ -46,26 +46,26 @@ public class GraphService {
     }
 
     private List<GraphModel> fetchExchangeRatesGraph() {
-        GraphModel[] exchangeRatesArray = restTemplate.getForObject(HNB_API_LAST_MONTH, GraphModel[].class);
-        for (GraphModel model : exchangeRatesArray) {
+        GraphModel[] graphRates= restTemplate.getForObject(HNB_API_LAST_MONTH, GraphModel[].class);
+        for (GraphModel model : graphRates) {
             System.out.println(model.getDatumPrimjene());
         }
 
-        return List.of(exchangeRatesArray);
+        return List.of(graphRates);
     }
 
-    public List<GraphDTO> getComparisonData(String from, String to, String range) {
+    public List<GraphDTO> getComparisonData(String currency1, String currency2, String choosenDate) {
         LocalDate endDate = LocalDate.now();
-        LocalDate startDate = range.equals("month") ? endDate.minusDays(30) : endDate.minusDays(7);
+        LocalDate startDate = choosenDate.equals("month") ? endDate.minusDays(30) : endDate.minusDays(7);
 
-        List<GraphModel> fromRates = graphRepository.findByValutaAndDatumPrimjeneBetween(from, startDate, endDate);
-        List<GraphModel> toRates = graphRepository.findByValutaAndDatumPrimjeneBetween(to, startDate, endDate);
+        List<GraphModel> currencyOne = graphRepository.findByValutaAndDatumPrimjeneBetween(currency1, startDate, endDate);
+        List<GraphModel> currencyTwo = graphRepository.findByValutaAndDatumPrimjeneBetween(currency2, startDate, endDate);
 
         Map<LocalDate, Double> fromMap = new HashMap<>();
         Map<LocalDate, Double> toMap = new HashMap<>();
 
-        fromRates.forEach(r -> fromMap.put(r.getDatumPrimjene(), r.getSrednji_tecaj()));
-        toRates.forEach(r -> toMap.put(r.getDatumPrimjene(), r.getSrednji_tecaj()));
+        currencyOne.forEach(r -> fromMap.put(r.getDatumPrimjene(), r.getSrednji_tecaj()));
+        currencyTwo.forEach(r -> toMap.put(r.getDatumPrimjene(), r.getSrednji_tecaj()));
 
         List<GraphDTO> result = new ArrayList<>();
 
