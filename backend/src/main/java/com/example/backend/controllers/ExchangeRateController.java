@@ -24,8 +24,13 @@ import java.util.Optional;
 public class ExchangeRateController {
 
 
-    @Autowired
+
     private ExchangeRateService exchangeRateService;
+
+    @Autowired
+    public void setExchangeRateService(ExchangeRateService exchangeRateService){
+        this.exchangeRateService = exchangeRateService;
+    }
 
     @GetMapping("/fetch-exchange-rates")
     public String fetchExchangeRates() {
@@ -149,7 +154,7 @@ public class ExchangeRateController {
         return ResponseEntity.ok(result);
     }
 
-    //spremanje tecajnice od zadnjeg mjeseca u bazu
+
 
 
 }

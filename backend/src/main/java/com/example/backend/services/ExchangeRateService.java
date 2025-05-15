@@ -1,11 +1,7 @@
 package com.example.backend.services;
-
 import com.example.backend.dto.ExchangeRateDTO;
-import com.example.backend.dto.GraphDTO;
 import com.example.backend.model.ExchangeRate;
-import com.example.backend.model.GraphModel;
 import com.example.backend.repositories.ExchangeRateRepository;
-import com.example.backend.repositories.GraphRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -14,9 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-
-import javax.sound.midi.InvalidMidiDataException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -27,13 +20,21 @@ import java.util.stream.Stream;
 @Service
 public class ExchangeRateService {
 
-    @Autowired
+
     private RestTemplate restTemplate;
+    private ExchangeRateRepository exchangeRateRepository;
+
 
     @Autowired
-    private ExchangeRateRepository exchangeRateRepository;
+    public void setRestTemplate(RestTemplate restTemplate){
+        this.restTemplate = restTemplate;
+    }
+
     @Autowired
-    private GraphRepository graphRepository;
+    public void setExchangeRateRepository(ExchangeRateRepository exchangeRateRepository){
+        this.exchangeRateRepository = exchangeRateRepository;
+    }
+
 
     private static final String HNB_API = "https://api.hnb.hr/tecajn-eur/v3";
 
@@ -64,7 +65,6 @@ public class ExchangeRateService {
         return exchangeRateRepository.findAll(pageable);
     }
 
-
     public List<ExchangeRate> fetchRatesFromApi(String startDate, String endDate) {
 
         String url = HNB_API + "?datum-primjene-od=" + startDate + "&datum-primjene-do=" + endDate;
@@ -77,8 +77,6 @@ public class ExchangeRateService {
             throw new RuntimeException("Greška prilikom dohvaćanja podataka s API-ja", e);
         }
     }
-
-
 
     public List<String> fetchCurrencyCode(){
         RestTemplate restTemplate = new RestTemplate();
@@ -167,17 +165,15 @@ public class ExchangeRateService {
             date = getCurrentDate();
         }
 
-        // Ako vrsta tečaja nije zadan, stavljamo srednji tečaj
         if (exchangeType == null || exchangeType.isEmpty()) {
             exchangeType = "srednji";
         }
 
-        // 1. Dohvati tečajeve za zadani datum
         String url = HNB_API + "?datum-primjene-od=" + date + "&datum-primjene-do=" + date;
         ResponseEntity<ExchangeRate[]> response = restTemplate.getForEntity(url, ExchangeRate[].class);
         ExchangeRate[] rates = response.getBody();
 
-        if (rates == null || rates.length == 0) {
+        if ( rates.length == 0) {
             throw new RuntimeException("Nema dostupnih tečajeva za uneseni datum.");
         }
 
@@ -189,14 +185,10 @@ public class ExchangeRateService {
         ExchangeRate toRate = findRate(rates, toCurrency);
         BigDecimal toValue = getRateValue(toRate, exchangeType);
 
-
-        BigDecimal amountInToCurrency = amount.multiply(fromValue).divide(toValue, 4, RoundingMode.HALF_UP);
-
-        return amountInToCurrency;
+        return amount.multiply(fromValue).divide(toValue, 4, RoundingMode.HALF_UP);
     }
 
     private String getCurrentDate() {
-        // Metoda koja vraća trenutni datum u formatu "yyyy-MM-dd"
         LocalDate currentDate = LocalDate.now();
         return currentDate.toString();
     }
