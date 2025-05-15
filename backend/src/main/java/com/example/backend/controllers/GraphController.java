@@ -20,9 +20,7 @@ public class GraphController {
     public void setGraphService(GraphService graphService) {
         this.graphService = graphService;
     }
-
-
-
+    
     @GetMapping("/last-month")
     public String fetchApiLastMonth() {
         graphService.fetchApiLastMonth();
