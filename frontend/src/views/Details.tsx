@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { formatDate } from "../utils/formatDate";
 
 const Details = () => {
   const { id } = useParams();
@@ -40,10 +41,7 @@ const Details = () => {
     fetchRate();
   }, [id]);
 
-  const formatDate = (isoDate: string) => {
-    const [year, month, day] = isoDate.split("-");
-    return `${day}.${month}.${year}`;
-  };
+  
 
   if (loading) return <p>Učitavanje...</p>;
   if (!rate) return <p>Tečajnica nije pronađena.</p>;
