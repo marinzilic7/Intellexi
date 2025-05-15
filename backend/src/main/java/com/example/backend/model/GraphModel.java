@@ -2,6 +2,7 @@ package com.example.backend.model;
 
 
 import com.example.backend.deserializer.CustomDoubleDeserializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 
@@ -19,30 +20,38 @@ public class GraphModel {
     private String brojTecajnice;
 
     @Column(name = "datum_primjene")
+    @JsonProperty("datum_primjene")
     private LocalDate datumPrimjene;
 
-    @Column(name="drzava")
+    @Column(name = "sifra_valute")
+    @JsonProperty("sifra_valute")
+    private String sifraValute;
+
+    @Column(name = "drzava")
+    @JsonProperty("drzava")
     private String drzava;
 
     @Column(name = "drzava_iso")
+    @JsonProperty("drzava_iso")
     private String drzava_iso;
 
-    @Column(name = "sifra_valute")
-    private String sifraValute;
-
-    @Column(name="valuta ")
+    @Column(name = "valuta ")
+    @JsonProperty("valuta")
     private String valuta;
 
     @JsonDeserialize(using = CustomDoubleDeserializer.class)
     @Column(name = "kupovni_tecaj")
+    @JsonProperty("kupovni_tecaj")
     private Double kupovni_tecaj;
 
     @JsonDeserialize(using = CustomDoubleDeserializer.class)
     @Column(name = "prodajni_tecaj")
+    @JsonProperty("prodajni_tecaj")
     private Double prodajni_tecaj;
 
     @JsonDeserialize(using = CustomDoubleDeserializer.class)
     @Column(name = "srednji_tecaj")
+    @JsonProperty("srednji_tecaj")
     private Double  srednji_tecaj;
 
 

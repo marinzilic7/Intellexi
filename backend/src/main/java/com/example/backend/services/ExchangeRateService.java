@@ -31,6 +31,7 @@ public class ExchangeRateService {
 
     @Autowired
     private ExchangeRateRepository exchangeRateRepository;
+    @Autowired
     private GraphRepository graphRepository;
 
     private static final String HNB_API = "https://api.hnb.hr/tecajn-eur/v3";
@@ -234,6 +235,7 @@ public class ExchangeRateService {
 
     private List<GraphModel> fetchExchangeRatesGraph() {
         GraphModel[] exchangeRatesArray = restTemplate.getForObject(HNB_API_LAST_MONTH, GraphModel[].class);
+        System.out.println("Dohvaćeno: " + exchangeRatesArray.length + " zapisa iz API-ja");
         return List.of(exchangeRatesArray);
     }
 
