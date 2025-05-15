@@ -218,57 +218,7 @@ public class ExchangeRateService {
     }
 
 
-    //Punjenje tečajnica od zadnjih mjesec dana u bazu
 
-
-    private static final String HNB_API_LAST_MONTH = "https://api.hnb.hr/tecajn-eur/v3?datum-primjene-od=2025-04-15&datum-primjene-do=2025-05-15";
-
-    public void fetchApiLastMonth(){
-        List<GraphModel> graphModels = fetchExchangeRatesGraph();
-
-
-
-        for (GraphModel graphModel : graphModels) {
-            if (!graphRepository.existsBySifraValuteAndDatumPrimjene(
-                    graphModel.getSifraValute(), graphModel.getDatumPrimjene())) {
-                graphRepository.save(graphModel);
-            }
-        }
-    }
-
-    private List<GraphModel> fetchExchangeRatesGraph() {
-        GraphModel[] exchangeRatesArray = restTemplate.getForObject(HNB_API_LAST_MONTH, GraphModel[].class);
-        for (GraphModel model : exchangeRatesArray) {
-            System.out.println(model.getDatumPrimjene());
-        }
-
-        return List.of(exchangeRatesArray);
-    }
-
-    public List<GraphDTO> getComparisonData(String from, String to, String range) {
-        LocalDate endDate = LocalDate.now();
-        LocalDate startDate = range.equals("month") ? endDate.minusDays(30) : endDate.minusDays(7);
-
-        List<GraphModel> fromRates = graphRepository.findByValutaAndDatumPrimjeneBetween(from, startDate, endDate);
-        List<GraphModel> toRates = graphRepository.findByValutaAndDatumPrimjeneBetween(to, startDate, endDate);
-
-        Map<LocalDate, Double> fromMap = new HashMap<>();
-        Map<LocalDate, Double> toMap = new HashMap<>();
-
-        fromRates.forEach(r -> fromMap.put(r.getDatumPrimjene(), r.getSrednji_tecaj()));
-        toRates.forEach(r -> toMap.put(r.getDatumPrimjene(), r.getSrednji_tecaj()));
-
-        List<GraphDTO> result = new ArrayList<>();
-
-        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
-            double val1 = fromMap.getOrDefault(date, 0.0);
-            double val2 = toMap.getOrDefault(date, 0.0);
-
-            result.add(new GraphDTO(date, val1, val2));
-        }
-
-        return result;
-    }
 
 
 }

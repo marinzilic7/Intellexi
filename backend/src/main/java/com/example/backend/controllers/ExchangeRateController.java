@@ -151,18 +151,5 @@ public class ExchangeRateController {
 
     //spremanje tecajnice od zadnjeg mjeseca u bazu
 
-    @GetMapping("/last-month")
-    public String fetchApiLastMonth() {
-        exchangeRateService.fetchApiLastMonth();
-        return "Podaci su uspješno dohvaćeni i spremljeni u bazu!";
-    }
 
-    @GetMapping("/graph")
-    public List<GraphDTO> getGraphData(
-            @RequestParam String from,
-            @RequestParam String to,
-            @RequestParam String range // "week" ili "month"
-    ) {
-        return exchangeRateService.getComparisonData(from, to, range);
-    }
 }
