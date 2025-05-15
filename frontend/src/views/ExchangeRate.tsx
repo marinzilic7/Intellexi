@@ -6,20 +6,12 @@ import CurrencyFilter from "../components/CurrencyFilter";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { formatDate } from "../utils/formatDate";
+import type { ExchangeRate } from "../types/ExchangeRate";
+
 
 function ExchangeRate() {
-  interface ExchangeRate {
-    id: number;
-    brojTecajnice: string;
-    datumPrimjene: string;
-    drzava: string;
-    drzava_iso: string;
-    sifraValute: string;
-    valuta: string;
-    kupovni_tecaj: string;
-    prodajni_tecaj: string;
-    srednji_tecaj: string;
-  }
+ 
 
   // Tečajnice
   const [exchangeRates, setExchangeRates] = useState<ExchangeRate[]>([]);
@@ -34,7 +26,6 @@ function ExchangeRate() {
   const [totalPages, setTotalPages] = useState(0);
 
   // Filteri po datumu
-
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [isFiltering, setIsFiltering] = useState(false);
@@ -46,13 +37,9 @@ function ExchangeRate() {
   const [currency, setCurrency] = useState("");
 
   //Uvjeti
-
   const [isApi, setApi] = useState(true);
 
-  const formatDate = (isoDate: string) => {
-    const [year, month, day] = isoDate.split("-");
-    return `${day}.${month}.${year}`;
-  };
+ 
 
   const fetchFromDatabase = () => {
     axios
