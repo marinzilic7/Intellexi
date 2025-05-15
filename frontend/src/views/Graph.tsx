@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import CurrencyFilter from "../components/CurrencyFilter";
+import type { GraphData } from "../types/GraphData";
 import {
   LineChart,
   Line,
@@ -11,11 +12,7 @@ import {
   Legend,
 } from "recharts";
 
-interface GraphData {
-  datum: string;
-  vrijednost: number;
-  vrijednost2: number;
-}
+
 
 const Graph: React.FC = () => {
   const [currency1, setCurrency1] = useState<string>("BAM");
