@@ -18,7 +18,7 @@ interface GraphData {
 }
 
 const Graph: React.FC = () => {
-  const [currency1, setCurrency1] = useState<string>("EUR");
+  const [currency1, setCurrency1] = useState<string>("BAM");
   const [currency2, setCurrency2] = useState<string>("USD");
   const [range, setRange] = useState<"week" | "month">("week");
   const [dataForChart, setDataForChart] = useState<GraphData[]>([]);
@@ -45,7 +45,7 @@ const Graph: React.FC = () => {
   return (
     <div>
       <div className="d-flex justify-content-center align-items-center flex-column mt-5">
-        <LineChart width={800} height={400} data={dataForChart}>
+        <LineChart width={1000} height={400} data={dataForChart}>
           <CartesianGrid stroke="#ccc" />
           <XAxis dataKey="datum" />
           <YAxis domain={["auto", "auto"]} />
@@ -54,16 +54,16 @@ const Graph: React.FC = () => {
           <Line
             type="monotone"
             dataKey="vrijednost"
-            stroke="#8884d8"
+            stroke="#0000FF"
             name={currency1}
-            dot={false}
+            dot={true}
           />
           <Line
             type="monotone"
             dataKey="vrijednost2"
-            stroke="#82ca9d"
+            stroke="#FF0000"
             name={currency2}
-            dot={false}
+            dot={true}
           />
         </LineChart>
       </div>
