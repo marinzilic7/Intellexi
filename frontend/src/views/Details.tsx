@@ -2,18 +2,10 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { formatDate } from "../utils/formatDate";
-
+import type { Rate } from "../types/Rate";
 const Details = () => {
   const { id } = useParams();
-  interface Rate {
-    id: number;
-    datumPrimjene: string;
-    valuta: string;
-    sifraValute: string;
-    kupovni_tecaj: string;
-    srednji_tecaj: string;
-    prodajni_tecaj: string;
-  }
+ 
 
   const [rate, setRate] = useState<Rate | null>(null);
   const [loading, setLoading] = useState(true);
