@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { formatDate } from "../utils/formatDate";
 import type { ExchangeRate } from "../types/ExchangeRate";
 import { useDeleteRate } from "../hooks/crud/useDeleteRate";
-import { getExchangeRates } from "../hooks/crud/getExchangeRates";
+import { getExchangeRates } from "../hooks/crud/useGetExchangeRates";
 
 function ExchangeRate() {
 
