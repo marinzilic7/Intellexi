@@ -17,4 +17,5 @@ public interface ExchangeRateRepository  extends JpaRepository<ExchangeRate, Lon
     List<ExchangeRate> findAll();
 
 
+
 }
