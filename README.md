@@ -30,6 +30,11 @@ Ova aplikacija omogućuje upravljanje i pregled tečajne liste valuta. Sastoji s
 - **URI:** `/rates/{id}`
 - **Opis:** Ažurira podatke postojeće tečajnice (datum, valuta, tečajevi).
 
+### 📝 Brisanje tečajnice
+- **HTTP metoda:** `DELETE`
+- **URI:** `/rates/{id}`
+- **Opis:** Brisanje tečajnice iz baze.
+
 ### 🕒 Automatski unos tečajnica
 - Svakog dana u **16:30** pokreće se job koji:
   - Dohvaća aktualne tečajnice s HNB API-ja
