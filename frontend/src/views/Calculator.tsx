@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import CurrencyFilter from "../components/CurrencyFilter";
+import type { ConvertRequest } from "../types/CovnertRequest";
 
 function Calculator() {
   const [currency, setCurrency] = useState("");
@@ -37,17 +38,19 @@ function Calculator() {
       return;
     }
 
+    const data: ConvertRequest = {  
+      amount,
+      fromCurrency: currency,
+      toCurrency: currency2,
+      exchangeType,
+      date: selectedDate,
+    };
+
+
+    
+
     try {
-      const response = await axios.post(
-        "http://localhost:8080/convert", 
-        {
-          amount,
-          fromCurrency: currency,
-          toCurrency: currency2,
-          exchangeType,
-          date: selectedDate,
-        }
-      );
+      const response = await axios.post("http://localhost:8080/convert", data);
       console.log("API odgovor:", response);
       setResult(response.data); 
       setError(null);
