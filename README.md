@@ -76,7 +76,7 @@ Ova aplikacija omogućuje upravljanje i pregled tečajne liste valuta. Sastoji s
 - [React](https://reactjs.org/)
 - [React Router](https://reactrouter.com/) – za upravljanje rutama
 - [Bootstrap](https://getbootstrap.com/) – za stilizaciju i responzivni dizajn
-- [Recharts](https://recharts.org/) – graficki prikaz 
+- [Recharts](https://recharts.org/) – grafički prikaz 
 
 ### Backend
 - [Java](https://www.java.com/en/)
@@ -86,13 +86,15 @@ Ova aplikacija omogućuje upravljanje i pregled tečajne liste valuta. Sastoji s
 ### Ostalo
 - Cron job – automatski unos tečajnica u 16:30
 - API: Hrvatska narodna banka (HNB)
+- **Docker** – kontejnerizacija aplikacije i baze podataka za jednostavno pokretanje i razvoj
 
 ## ▶️ Pokretanje projekta
 
-Projekt možeš pokrenuti pomoću **Docker Compose** naredbe:
+Projekt možeš pokrenuti pomoću **Docker Compose** naredbe, što omogućuje jednostavnu instalaciju i konfiguraciju svih potrebnih servisa:
 
 ```bash
 docker compose up
+
 ```
 
 
