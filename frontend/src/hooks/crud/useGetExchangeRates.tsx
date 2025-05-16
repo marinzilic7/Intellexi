@@ -5,6 +5,7 @@ import axios from "axios";
 export function getExchangeRates() {
   const [exchangeRates, setExchangeRates] = useState<ExchangeRate[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
+  
   const [totalPages, setTotalPages] = useState(0);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
