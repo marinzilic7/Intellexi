@@ -193,7 +193,7 @@ function Home() {
           onFilter={handleFilter}
           onReset={handleReset}
         />
-        <div className="d-flex gap-3 align-items-center flex-wrap">
+        <div className="d-flex gap-3  flex-wrap">
           <CurrencyCodeFilter
             currencyCode={currencyCode}
             onCurrencyCodeChange={onCurrencyCodeChange}
@@ -229,7 +229,7 @@ function Home() {
               (rate, index) => (
                 <tr key={index}>
                   <td
-                    className="text-center"
+                    className="td-text text-center"
                     onClick={() => handleClick(rate.id)}
                     style={{ cursor: "pointer" }}
                   >
@@ -248,15 +248,16 @@ function Home() {
                         onClick={() => handleClick(rate.id)}
                         style={{ cursor: "pointer" }}
                       >
-                        <button className="btn btn-sm btn-primary">
+                        <button className="details-btn text-primary text-decoration-underline fw-bold btn btn-sm btn-transparent">
                           Detalji
+
                         </button>
                       </td>
                       <td>
-                        <button className="btn btn-sm btn-dark ms-5">
+                        <button className="update-btn btn btn-sm btn-transparent ms-lg-5">
                           <Link
                             to={`/edit/${rate.id}`}
-                            className="text-light text-decoration-none"
+                            className=" text-success fw-bold"
                           >
                             Uredi
                           </Link>
@@ -265,7 +266,7 @@ function Home() {
 
                       <td className="d-flex justify-content-center">
                         <button
-                          className="btn btn-sm btn-danger ms-2"
+                          className="delete-btn btn btn-sm btn-transparent text-danger fw-bold text-decoration-underline ms-2"
                           onClick={() => deleteRate(rate.id)}
                         >
                           Izbrisi
