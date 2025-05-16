@@ -8,3 +8,7 @@ body {
 .details-btn, .update-btn, .delete-btn {
    font-size: 13px;
 }
+
+table{
+   font-size: 15px;
+}

@@ -17,7 +17,7 @@ const CurrencyFilter: React.FC<CurrencyFilter> = ({
       .get(`http://localhost:8080/getCurrency`)
       .then((response) => {
         setCurrencyList(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch(() => console.error("Error fetching currency"));
   };

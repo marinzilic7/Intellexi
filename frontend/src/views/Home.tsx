@@ -25,13 +25,6 @@ function Home() {
     fetchFromDatabase,
   } = getExchangeRates();
 
-  //Pozivanje hooka za brisanje
-  const { deleteRate } = useDeleteRate(() => {
-    (id: number) =>
-      setExchangeRates((prev) => prev.filter((rate) => rate.id !== id));
-    fetchFromDatabase();
-  });
-
   //filtriranje
   const [filteredRates, setFilteredRates] = useState<ExchangeRate[]>([]);
   const [startDate, setStartDate] = useState("");
@@ -40,6 +33,8 @@ function Home() {
   const [currencyCode, setCurrencyCode] = useState("");
   const [currency, setCurrency] = useState("");
   const [isApi, setApi] = useState(true);
+
+  const [sortOrder, setSortOrder] = useState("asc");
 
   const fetchFromApi = () => {
     let apiStartDate = startDate;
@@ -92,15 +87,6 @@ function Home() {
     }
   }, [currentPage]);
 
-  const handlePageChange = (page: number) => {
-    if (
-      page >= 0 &&
-      page < (isFiltering ? Math.ceil(filteredRates.length / 10) : totalPages)
-    ) {
-      setCurrentPage(page);
-    }
-  };
-
   const handleFilter = () => {
     fetchFromApi();
   };
@@ -120,11 +106,47 @@ function Home() {
   const itemsPerPage = 10;
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentFilteredRates = filteredRates.slice(
+
+  const sortByDate = (rates: ExchangeRate[]) => {
+    return [...rates].sort((a, b) => {
+      const dateA = new Date(a.datumPrimjene);
+      const dateB = new Date(b.datumPrimjene);
+
+      if (sortOrder === "asc") {
+        return dateA.getTime() - dateB.getTime();
+      } else {
+        return dateB.getTime() - dateA.getTime();
+      }
+    });
+  };
+
+  const ratesToDisplay = sortByDate(
+    isFiltering ? filteredRates : exchangeRates
+  );
+
+  console.log("Exchanes rates", exchangeRates);
+  console.log("Filtrirani tecajevi", filteredRates);
+  console.log("Podaci koji se prikazuju:", ratesToDisplay);
+
+  //greska je ovdje
+  const paginatedRates = ratesToDisplay.slice(
     indexOfFirstItem,
     indexOfLastItem
   );
+
+
+
+  console.log("Paginirani  tecajevi:", paginatedRates);
+
   const filteredTotalPages = Math.ceil(filteredRates.length / itemsPerPage);
+
+  const maxPage = isFiltering ? filteredTotalPages - 1 : totalPages - 1;
+
+  const handlePageChange = (page: number) => {
+    if (page >= 0 && page <= maxPage) {
+      setCurrentPage(page);
+    }
+  };
 
   const onCurrencyCodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCurrencyCode = e.target.value;
@@ -159,6 +181,13 @@ function Home() {
   const handleClick = (id: number) => {
     navigate(`/details/${id}`);
   };
+
+  //Pozivanje hooka za brisanje
+  const { deleteRate } = useDeleteRate(() => {
+    (id: number) =>
+      setExchangeRates((prev) => prev.filter((rate) => rate.id !== id));
+    fetchFromDatabase();
+  });
 
   return (
     <div className="container mt-4">
@@ -209,7 +238,22 @@ function Home() {
         <table className="table table-striped table-bordered table-hover">
           <thead>
             <tr>
-              <th className="text-center">Datum primjene</th>
+              <th className="text-center">
+                Datum primjene{" "}
+                <button
+                  className="btn btn-sm btn-outline-secondary ms-2"
+                  onClick={() =>
+                    setSortOrder(sortOrder === "asc" ? "desc" : "asc")
+                  }
+                  title={
+                    sortOrder === "asc"
+                      ? "Sortiraj od najnovijeg prema najstarijem"
+                      : "Sortiraj od najstarijeg prema najnovijem"
+                  }
+                >
+                  {sortOrder === "asc" ? "⬆️" : "⬇️"}
+                </button>
+              </th>
               <th className="text-center">Šifra valute</th>
               <th className="text-center">Valuta</th>
               <th className="text-center">Kupovni tečaj</th>
@@ -225,58 +269,55 @@ function Home() {
             </tr>
           </thead>
           <tbody>
-            {(isFiltering ? currentFilteredRates : exchangeRates).map(
-              (rate, index) => (
-                <tr key={index}>
-                  <td
-                    className="td-text text-center"
-                    onClick={() => handleClick(rate.id)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {formatDate(rate.datumPrimjene)}
-                  </td>
-                  <td className="text-center">{rate.sifraValute}</td>
-                  <td className="text-center">{rate.valuta}</td>
-                  <td className="text-center">{rate.kupovni_tecaj}</td>
-                  <td className="text-center">{rate.srednji_tecaj}</td>
-                  <td className="text-center">{rate.prodajni_tecaj}</td>
-
-                  {isApi && (
-                    <>
-                      <td
-                        className="text-center"
-                        onClick={() => handleClick(rate.id)}
-                        style={{ cursor: "pointer" }}
-                      >
-                        <button className="details-btn text-primary text-decoration-underline fw-bold btn btn-sm btn-transparent">
-                          Detalji
-
-                        </button>
-                      </td>
-                      <td>
-                        <button className="update-btn btn btn-sm btn-transparent ms-lg-5">
-                          <Link
-                            to={`/edit/${rate.id}`}
-                            className=" text-success fw-bold"
-                          >
-                            Uredi
-                          </Link>
-                        </button>
-                      </td>
-
-                      <td className="d-flex justify-content-center">
-                        <button
-                          className="delete-btn btn btn-sm btn-transparent text-danger fw-bold text-decoration-underline ms-2"
-                          onClick={() => deleteRate(rate.id)}
+            {(paginatedRates).map((rate, index) => (
+              <tr key={index}>
+                <td
+                  className="td-text text-center"
+                  onClick={() => handleClick(rate.id)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {formatDate(rate.datumPrimjene)}
+                </td>
+                <td className="text-center">{rate.sifraValute}</td>
+                <td className="text-center">{rate.valuta}</td>
+                <td className="text-center">{rate.kupovni_tecaj}</td>
+                <td className="text-center">{rate.srednji_tecaj}</td>
+                <td className="text-center">{rate.prodajni_tecaj}</td>
+          
+                {isApi && (
+                  <>
+                    <td
+                      className="text-center"
+                      onClick={() => handleClick(rate.id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <button className="details-btn text-primary text-decoration-underline fw-bold btn btn-sm btn-transparent">
+                        Detalji
+                      </button>
+                    </td>
+                    <td>
+                      <button className="update-btn btn btn-sm btn-transparent ms-lg-5">
+                        <Link
+                          to={`/edit/${rate.id}`}
+                          className=" text-success fw-bold"
                         >
-                          Izbrisi
-                        </button>
-                      </td>
-                    </>
-                  )}
-                </tr>
-              )
-            )}
+                          Uredi
+                        </Link>
+                      </button>
+                    </td>
+          
+                    <td className="d-flex justify-content-center">
+                      <button
+                        className="delete-btn btn btn-sm btn-transparent text-danger fw-bold text-decoration-underline ms-2"
+                        onClick={() => deleteRate(rate.id)}
+                      >
+                        Izbrisi
+                      </button>
+                    </td>
+                  </>
+                )}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

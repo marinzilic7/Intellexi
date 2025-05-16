@@ -42,9 +42,15 @@ public class ExchangeRateController {
         return "Podaci su uspješno dohvaćeni i spremljeni u bazu!";
     }
 
+    /*
     @GetMapping("/rates")
     public Page<ExchangeRate> getAllExchangeRates(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
         return exchangeRateService.getAllExchangeRate(page, size);
+    }
+     */
+    @GetMapping("/rates")
+    public List<ExchangeRate> getAllExchangeRates() {
+        return exchangeRateService.getAllExchangeRate();
     }
 
     @GetMapping("/rates-by-date")

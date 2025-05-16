@@ -60,10 +60,17 @@ public class ExchangeRateService {
         return List.of(exchangeRatesArray);
     }
 
-    public Page<ExchangeRate> getAllExchangeRate(int page, int size){
-        Pageable pageable = PageRequest.of(page, size);
-        return exchangeRateRepository.findAll(pageable);
+    //public Page<ExchangeRate> getAllExchangeRate(int page, int size){
+    //  Pageable pageable = PageRequest.of(page, size);
+    //  return exchangeRateRepository.findAll(pageable);
+    //   }
+
+
+    public List<ExchangeRate> getAllExchangeRate() {
+        return exchangeRateRepository.findAll();
     }
+
+
 
     public List<ExchangeRate> fetchRatesFromApi(String startDate, String endDate) {
 
