@@ -1,61 +1,23 @@
-import React, { useState } from "react";
-import axios from "axios";
+
 import CurrencyFilter from "../components/CurrencyFilter";
-import type { ConvertRequest } from "../types/CovnertRequest";
+import { useCalculator } from "../hooks/useCalculator";
 
 function Calculator() {
-  const [currency, setCurrency] = useState("");
-  const [currency2, setCurrency2] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
-  const [amount, setAmount] = useState<number | string>("");
-  const [exchangeType, setExchangeType] = useState("");
-  const [result, setResult] = useState<number | string | null>(null); // Dodano za pohranu rezultata
-  const [error, setError] = useState<string | null>(null); // Dodano za pohranu greške
-
-  const onCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCurrency = e.target.value;
-    setCurrency(selectedCurrency);
-  };
-
-  const onCurrencyChange2 = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCurrency2 = e.target.value;
-    setCurrency2(selectedCurrency2);
-  };
-
-  const onDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(e.target.value);
-  };
-
-  const onExchangeTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setExchangeType(e.target.value);
-  };
-
-  const handleConversion = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!currency || !currency2 || !amount) {
-      setError("Molimo unesite sve podatke.");
-      return;
-    }
-
-    const data: ConvertRequest = {
-      amount,
-      fromCurrency: currency,
-      toCurrency: currency2,
-      exchangeType,
-      date: selectedDate,
-    };
-
-    try {
-      const response = await axios.post("http://localhost:8080/convert", data);
-      console.log("API odgovor:", response);
-      setResult(response.data);
-      setError(null);
-    } catch (error:any ) {
-      setError(error.response?.data || "Greška prilikom konverzije.");
-      setResult(null);
-    }
-  };
+  const {
+    currency,
+    currency2,
+    selectedDate,
+    amount,
+    exchangeType,
+    result,
+    error,
+    onCurrencyChange,
+    onCurrencyChange2,
+    onDateChange,
+    onExchangeTypeChange,
+    setAmount,
+    handleConversion,
+  } = useCalculator();
 
   return (
     <div>
@@ -129,7 +91,6 @@ function Calculator() {
           </button>
         </form>
 
-        {/* Greška i rezultat */}
         {error && (
           <div className="d-flex justify-content-center mt-3">
             <div className="alert alert-danger w-25  text-center mt-3">

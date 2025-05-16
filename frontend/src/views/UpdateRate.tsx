@@ -1,85 +1,24 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
-
-interface RateData {
-  datumPrimjene: string;
-  sifraValute: string;
-  valuta: string;
-  kupovni_tecaj: string;
-  srednji_tecaj: string;
-  prodajni_tecaj: string;
-}
-
-interface ErrorData {
-  [key: string]: string;
-}
+import { useUpdateHook } from "../hooks/useUpdateHook";
 
 function UpdateRate() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-
-  const [formData, setFormData] = useState<RateData>({
-    datumPrimjene: "",
-    sifraValute: "",
-    valuta: "",
-    kupovni_tecaj: "",
-    srednji_tecaj: "",
-    prodajni_tecaj: "",
-  });
-
-  const [errors, setErrors] = useState<ErrorData>({});
-  const [success, setSuccess] = useState(false);
-
-  useEffect(() => {
-    axios
-      .get(`http://localhost:8080/rates/${id}`)
-      .then((res) => {
-        setFormData(res.data);
-      })
-      .catch((err) => {
-        console.error("Greška prilikom dohvaćanja tečajnice:", err);
-      });
-  }, [id]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrors({});
-
-    axios
-      .put(`http://localhost:8080/rates/${id}`, formData)
-      .then(() => {
-         setSuccess(true);
-        setTimeout(() => {
-          setSuccess(false);
-          navigate("/");
-        }, 3000);
-       
-        
-      })
-      .catch((err) => {
-        if (err.response && err.response.data) {
-          setErrors(err.response.data);
-        } else {
-          console.error("Greška:", err);
-        }
-      });
-  };
+  const {
+    formData,
+    errors,
+    success,
+    handleChange,
+    handleSubmit,
+  } = useUpdateHook();
 
   return (
     <div className="container">
-        {success && (
-            <div
-            className="alert alert-success w-25 position-absolute end-0 top-0 mt-5 me-5 text-center"
-            role="alert"
-            >
-            Tečajnica je uspješno uređena
-            </div>
-        )}
+      {success && (
+        <div
+          className="alert alert-success w-25 position-absolute end-0 top-0 mt-5 me-5 text-center"
+          role="alert"
+        >
+          Tečajnica je uspješno uređena
+        </div>
+      )}
 
       <h3 className="text-center mt-5 mb-5">Uredi tečajnicu</h3>
       <form onSubmit={handleSubmit} className="w-50 mx-auto">

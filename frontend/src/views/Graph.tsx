@@ -1,7 +1,4 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import CurrencyFilter from "../components/CurrencyFilter";
-import type { GraphData } from "../types/GraphData";
+import React from "react";
 import {
   LineChart,
   Line,
@@ -11,31 +8,19 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import CurrencyFilter from "../components/CurrencyFilter";
+import { useGraph } from "../hooks/useGraph";
 
 const Graph: React.FC = () => {
-  const [currency1, setCurrency1] = useState<string>("BAM");
-  const [currency2, setCurrency2] = useState<string>("USD");
-  const [range, setRange] = useState<"week" | "month">("week");
-  const [dataForChart, setDataForChart] = useState<GraphData[]>([]);
-
-  useEffect(() => {
-    if (!currency1 || !currency2) return;
-
-    axios
-      .get<GraphData[]>("http://localhost:8080/graph", {
-        params: {
-          currency1: currency1,
-          currency2: currency2,
-          choosenDate: range,
-        },
-      })
-      .then((response) => {
-        setDataForChart(response.data);
-      })
-      .catch((error) => {
-        console.error("Greška pri dohvaćanju podataka:", error);
-      });
-  }, [currency1, currency2, range]);
+  const {
+    currency1,
+    setCurrency1,
+    currency2,
+    setCurrency2,
+    range,
+    setRange,
+    dataForChart,
+  } = useGraph();
 
   return (
     <div>
