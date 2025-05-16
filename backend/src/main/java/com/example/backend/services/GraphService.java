@@ -30,7 +30,12 @@ public class GraphService {
     }
 
     //Punjenje tečajnica od zadnjih mjesec dana u bazu od 15-04-2025 do 15-05-2025
-    private static final String HNB_API_LAST_MONTH = "https://api.hnb.hr/tecajn-eur/v3?datum-primjene-od=2025-04-15&datum-primjene-do=2025-05-15";
+
+    LocalDate dateNow = LocalDate.now();
+    String HNB_API_LAST_MONTH = "https://api.hnb.hr/tecajn-eur/v3?datum-primjene-od="+dateNow.minusDays(30)+ "&datum-primjene-do=" + dateNow;
+
+
+
 
     public void fetchApiLastMonth(){
         List<GraphModel> graphModels = fetchExchangeRatesGraph();
@@ -41,6 +46,8 @@ public class GraphService {
                 graphRepository.save(graphModel);
             }
         }
+
+
     }
 
     private List<GraphModel> fetchExchangeRatesGraph() {

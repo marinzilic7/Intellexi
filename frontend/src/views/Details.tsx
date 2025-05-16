@@ -75,7 +75,7 @@ const Details = () => {
             <td>{rate.prodajni_tecaj}</td>
             <td className="d-flex justify-content-center">
               <button
-                className="btn btn-sm btn-danger ms-2"
+                className="btn btn-sm  btn-transparent text-danger fw-bold text-decoration-underline ms-2"
                 onClick={() => deleteRate(rate.id)}
               >
                 Izbrisi
