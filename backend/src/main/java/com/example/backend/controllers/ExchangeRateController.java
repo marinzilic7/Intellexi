@@ -33,6 +33,8 @@ public class ExchangeRateController {
         this.exchangeRateService = exchangeRateService;
     }
 
+
+
     @GetMapping("/fetch-exchange-rates")
     public String fetchExchangeRates() {
         exchangeRateService.fetchApi();
