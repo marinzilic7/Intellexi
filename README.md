@@ -1,4 +1,4 @@
-# 📈 Tečajna Lista – Projektni Zadatak
+# 📈 Tečajna Lista – Projektni Zadatak - Intellexi
 
 Ova aplikacija omogućuje upravljanje i pregled tečajne liste valuta. Sastoji se od klijentskog i serverskog dijela te omogućuje sljedeće funkcionalnosti:
 
@@ -79,8 +79,9 @@ Ova aplikacija omogućuje upravljanje i pregled tečajne liste valuta. Sastoji s
 - [Recharts](https://recharts.org/) – graficki prikaz 
 
 ### Backend
-- Java + Spring Boot
-- H2 (in-memory) baza podataka – koristi se za pohranu tečajnica bez potrebe za dodatnim setupom baze
+- [Java](https://www.java.com/en/)
+- [Spring Boot](https://spring.io/projects/spring-boot)
+- [H2](https://www.h2database.com/html/main.html) (in-memory) baza podataka – koristi se za pohranu tečajnica bez potrebe za dodatnim setupom baze
 
 ### Ostalo
 - Cron job – automatski unos tečajnica u 16:30
