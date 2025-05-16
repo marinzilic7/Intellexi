@@ -20,7 +20,7 @@ const FilterForm: React.FC<FilterFormProps> = ({
   onReset,
 }) => {
   return (
-    <div className="d-flex jusify-content-between align-items-center gap-3">
+    <div className="d-flex jusify-content-between align-items-center flex-wrap gap-3">
       <div>
         <label>Od: </label>
         <input

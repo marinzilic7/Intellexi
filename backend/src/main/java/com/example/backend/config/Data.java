@@ -16,7 +16,7 @@ public class Data implements CommandLineRunner {
         this.graphService = graphService;
     }
 
-    // ubacivanje tecajnica u bazu
+    // ubacivanje tecajnica u bazu - ubacivanje tecajncica u bazu od zadnjih mjesec dana
     @Override
     public void run(String... args) throws Exception {
         exchangeRateService.fetchApi();
@@ -24,7 +24,7 @@ public class Data implements CommandLineRunner {
         System.out.println("Podaci uspješno dohvaćeni i spremljeni prilikom starta aplikacije.");
     }
 
-    //ubacivanje tecajnica u bazu od zadnjih mjesec dana
+
 
 
 }

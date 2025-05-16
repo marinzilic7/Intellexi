@@ -29,7 +29,7 @@ const CurrencyCodeFilter: React.FC<CurrencyCodeFilterProps> = ({
   
 
   return (
-    <div className="mb-4 d-flex align-items-center gap-3">
+    <div >
       <div>
         <label>Sifra valute: </label>
         <select

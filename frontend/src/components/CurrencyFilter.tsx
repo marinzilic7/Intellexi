@@ -29,7 +29,7 @@ const CurrencyFilter: React.FC<CurrencyFilter> = ({
   
 
   return (
-    <div className="mb-4 d-flex align-items-center gap-3">
+    <div className=" d-flex align-items-center gap-3">
       <div>
         <label>Valuta: </label>
         <select
