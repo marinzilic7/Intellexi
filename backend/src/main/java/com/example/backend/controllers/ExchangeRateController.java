@@ -6,6 +6,7 @@ import com.example.backend.dto.GraphDTO;
 import com.example.backend.model.ExchangeRate;
 import com.example.backend.services.ExchangeRateService;
 import jakarta.validation.Valid;
+import org.hibernate.jdbc.Expectation;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -143,15 +144,23 @@ public class ExchangeRateController {
     }
 
     @PostMapping("/convert")
-    public ResponseEntity<BigDecimal> convert(@RequestBody ExchangeRateDTO request) {
-        BigDecimal result = exchangeRateService.convertCurrency(
-                request.getAmount(),
-                request.getFromCurrency(),
-                request.getToCurrency(),
-                request.getExchangeType(),
-                request.getDate()
-        );
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> convert(@RequestBody ExchangeRateDTO request) {
+        try {
+            BigDecimal result = exchangeRateService.convertCurrency(
+                    request.getAmount(),
+                    request.getFromCurrency(),
+                    request.getToCurrency(),
+                    request.getExchangeType(),
+                    request.getDate()
+            );
+            return ResponseEntity.ok(result);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Došlo je do greške.");
+        }
+
+
     }
 
 

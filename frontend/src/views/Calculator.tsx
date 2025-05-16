@@ -33,12 +33,12 @@ function Calculator() {
   const handleConversion = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!currency || !currency2 ||  !amount  ) {
+    if (!currency || !currency2 || !amount) {
       setError("Molimo unesite sve podatke.");
       return;
     }
 
-    const data: ConvertRequest = {  
+    const data: ConvertRequest = {
       amount,
       fromCurrency: currency,
       toCurrency: currency2,
@@ -46,17 +46,14 @@ function Calculator() {
       date: selectedDate,
     };
 
-
-    
-
     try {
       const response = await axios.post("http://localhost:8080/convert", data);
       console.log("API odgovor:", response);
-      setResult(response.data); 
+      setResult(response.data);
       setError(null);
-    } catch (error) {
-      setError("Greška prilikom konverzije. Pokušajte ponovo.");
-      setResult(null); 
+    } catch (error:any ) {
+      setError(error.response?.data || "Greška prilikom konverzije.");
+      setResult(null);
     }
   };
 
@@ -134,13 +131,16 @@ function Calculator() {
 
         {/* Greška i rezultat */}
         {error && (
-          <div className="alert alert-danger text-center mt-3">{error}</div>
+          <div className="d-flex justify-content-center mt-3">
+            <div className="alert alert-danger w-25  text-center mt-3">
+              {error}
+            </div>
+          </div>
         )}
         {result && (
           <div className="d-flex justify-content-center mt-5">
             <div className="alert alert-info text-center w-25">
               Rezultat: {result} {currency2}
-           
             </div>
           </div>
         )}
