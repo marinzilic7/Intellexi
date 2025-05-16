@@ -12,7 +12,6 @@ import { useDeleteRate } from "../hooks/crud/useDeleteRate";
 import { getExchangeRates } from "../hooks/crud/useGetExchangeRates";
 
 function ExchangeRate() {
-
   //Pozivanje hooka za dohvaćanje tečajnica
   const {
     exchangeRates,
@@ -26,12 +25,16 @@ function ExchangeRate() {
     fetchFromDatabase,
   } = getExchangeRates();
 
+ 
+
   //Pozivanje hooka za brisanje
-  const { deleteRate } = useDeleteRate(setExchangeRates);
+  const { deleteRate } = useDeleteRate(() => {
+    (id: number) =>
+      setExchangeRates((prev) => prev.filter((rate) => rate.id !== id));
+      fetchFromDatabase(); 
+  });
 
-
-
-  //filtriranje 
+  //filtriranje
   const [filteredRates, setFilteredRates] = useState<ExchangeRate[]>([]);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -115,7 +118,7 @@ function ExchangeRate() {
     setApi(true);
   };
 
-  // Paginacija 
+  // Paginacija
   const itemsPerPage = 10;
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;

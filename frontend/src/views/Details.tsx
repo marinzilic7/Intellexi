@@ -3,13 +3,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { formatDate } from "../utils/formatDate";
 import type { Rate } from "../types/Rate";
+import { useDeleteRate } from "../hooks/crud/useDeleteRate";
+
 const Details = () => {
   const { id } = useParams();
- 
-
   const [rate, setRate] = useState<Rate | null>(null);
-  const [loading, setLoading] = useState(true);
-
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
@@ -25,39 +23,18 @@ const Details = () => {
         console.error("Greška:", err);
         setError(true);
         setTimeout(() => setError(false), 3000);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchRate();
   }, [id]);
 
-  
-
-  if (loading) return <p>Učitavanje...</p>;
   if (!rate) return <p>Tečajnica nije pronađena.</p>;
 
-  const deleteRate = async (id: number) => {
-    if (!window.confirm("Jeste li sigurni da želite obrisati ovu tečajnicu?")) {
-      return;
-    }
-
-    try {
-      const response = await fetch(`http://localhost:8080/rates/${id}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        setRate(null);
-      } else {
-        alert("Greška prilikom brisanja!");
-      }
-    } catch (error) {
-      console.error("Greška:", error);
-      alert("Došlo je do greške!");
-    }
-  };
+  // Pozivanje hooka za brisanje
+  const { deleteRate } = useDeleteRate(() => {
+    setRate(null);
+  });
 
   return (
     <div>

@@ -27,10 +27,12 @@ export function getExchangeRates() {
     totalPages,
     success,
     error,
+
+    setSuccess,
+
     setExchangeRates,
     setCurrentPage,
     fetchFromDatabase,
     setError,
   };
-
 }
