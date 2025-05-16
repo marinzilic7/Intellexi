@@ -1,6 +1,6 @@
 // AppRoutes.tsx
 import { Routes, Route } from "react-router-dom";
-import ExchangeRate from "./views/ExchangeRate";
+import Home from "./views/Home";
 import Calculator from "./views/Calculator";
 import Graph from "./views/Graph";
 import Details from "./views/Details";
@@ -10,7 +10,7 @@ import UpdateRate from "./views/UpdateRate";
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<ExchangeRate />} />
+      <Route path="/" element={<Home />} />
       <Route path="/calculator" element={<Calculator />} />
       <Route path="/graph" element={<Graph />} />
       <Route path="/details/:id" element={<Details />} />

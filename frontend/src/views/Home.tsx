@@ -11,7 +11,7 @@ import type { ExchangeRate } from "../types/ExchangeRate";
 import { useDeleteRate } from "../hooks/crud/useDeleteRate";
 import { getExchangeRates } from "../hooks/crud/useGetExchangeRates";
 
-function ExchangeRate() {
+function Home() {
   //Pozivanje hooka za dohvaćanje tečajnica
   const {
     exchangeRates,
@@ -299,4 +299,4 @@ function ExchangeRate() {
   );
 }
 
-export default ExchangeRate;
+export default Home;
