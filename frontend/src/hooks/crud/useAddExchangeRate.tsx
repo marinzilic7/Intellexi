@@ -20,6 +20,7 @@ const [form, setForm] = useState<Partial<ExchangeRateDTO>>({
     srednji_tecaj: undefined,
     prodajni_tecaj: undefined,
   });
+  
   const [errors, setErrors] = useState<Record<string, string>>( {} );
   const [apiError, setApiError] = useState<string>("");
   const [successMessage, setSuccessMessage] = useState<string>("");
