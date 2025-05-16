@@ -70,7 +70,7 @@ Ova aplikacija omogućuje upravljanje i pregled tečajne liste valuta. Sastoji s
   - vrste tečaja (kupovni, srednji, prodajni)
 
 ### 📊 Grafički prikaz kretanja valute
-- Prikaz kretanja srednjeg tečaja u odnosu na drugu valutu (zadani EUR)
+- Prikaz kretanja srednjeg tečaja u odnosu na drugu valutu 
 - Odabir vremenskog raspona:
   - posljednjih 7 dana
   - posljednjih 30 dana
