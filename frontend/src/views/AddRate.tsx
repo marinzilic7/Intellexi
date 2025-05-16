@@ -1,6 +1,6 @@
 
 
-import { useAddExchangeRate } from "../hooks/useAddExchangeRate";
+import { useAddExchangeRate } from "../hooks/crud/useAddExchangeRate";
 
 const AddRate: React.FC = () => {
   const { form, errors, apiError, successMessage, handleChange, handleSubmit } =

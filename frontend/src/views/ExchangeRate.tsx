@@ -8,50 +8,37 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { formatDate } from "../utils/formatDate";
 import type { ExchangeRate } from "../types/ExchangeRate";
-
+import { useDeleteRate } from "../hooks/crud/useDeleteRate";
+import { getExchangeRates } from "../hooks/crud/getExchangeRates";
 
 function ExchangeRate() {
- 
 
-  // Tečajnice
-  const [exchangeRates, setExchangeRates] = useState<ExchangeRate[]>([]);
+  //Pozivanje hooka za dohvaćanje tečajnica
+  const {
+    exchangeRates,
+    currentPage,
+    totalPages,
+    success,
+    error,
+    setExchangeRates,
+    setCurrentPage,
+    setError,
+    fetchFromDatabase,
+  } = getExchangeRates();
+
+  //Pozivanje hooka za brisanje
+  const { deleteRate } = useDeleteRate(setExchangeRates);
+
+
+
+  //filtriranje 
   const [filteredRates, setFilteredRates] = useState<ExchangeRate[]>([]);
-
-  //Poruke
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState(false);
-
-  // Paginacija
-  const [currentPage, setCurrentPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
-
-  // Filteri po datumu
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [isFiltering, setIsFiltering] = useState(false);
-
-  // Filteri po sifri valute
   const [currencyCode, setCurrencyCode] = useState("");
-
-  // Filteri po valuti
   const [currency, setCurrency] = useState("");
-
-  //Uvjeti
   const [isApi, setApi] = useState(true);
-
- 
-
-  const fetchFromDatabase = () => {
-    axios
-      .get(`http://localhost:8080/rates?page=${currentPage}&size=5`)
-      .then((response) => {
-        setExchangeRates(response.data.content);
-        setTotalPages(response.data.totalPages);
-        setSuccess(true);
-        setTimeout(() => setSuccess(false), 3000);
-      })
-      .catch(() => setError(true));
-  };
 
   const fetchFromApi = () => {
     let apiStartDate = startDate;
@@ -128,7 +115,7 @@ function ExchangeRate() {
     setApi(true);
   };
 
-  // Pagination variables
+  // Paginacija 
   const itemsPerPage = 10;
   const indexOfLastItem = (currentPage + 1) * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -170,27 +157,6 @@ function ExchangeRate() {
 
   const handleClick = (id: number) => {
     navigate(`/details/${id}`);
-  };
-
-  const deleteRate = async (id: number) => {
-    if (!window.confirm("Jeste li sigurni da želite obrisati ovu tečajnicu?")) {
-      return;
-    }
-
-    try {
-      const response = await fetch(`http://localhost:8080/rates/${id}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        setExchangeRates((prev) => prev.filter((rate) => rate.id !== id));
-      } else {
-        alert("Greška prilikom brisanja!");
-      }
-    } catch (error) {
-      console.error("Greška:", error);
-      alert("Došlo je do greške!");
-    }
   };
 
   return (

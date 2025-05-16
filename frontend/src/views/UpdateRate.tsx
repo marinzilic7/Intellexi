@@ -1,4 +1,4 @@
-import { useUpdateHook } from "../hooks/useUpdateHook";
+import { useUpdateHook } from "../hooks/crud/useUpdateHook";
 
 function UpdateRate() {
   const {
