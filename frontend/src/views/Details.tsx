@@ -29,7 +29,7 @@ const Details = () => {
     fetchRate();
   }, [id]);
 
-  if (!rate) return <p>Tečajnica nije pronađena.</p>;
+  if (!rate) return <div className="alert alert-danger text-center">Tečajnice nije pronađena</div>;
 
   // Pozivanje hooka za brisanje
   const { deleteRate } = useDeleteRate(() => {
