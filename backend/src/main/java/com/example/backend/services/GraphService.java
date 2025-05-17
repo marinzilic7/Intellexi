@@ -52,9 +52,7 @@ public class GraphService {
 
     private List<GraphModel> fetchExchangeRatesGraph() {
         GraphModel[] graphRates= restTemplate.getForObject(HNB_API_LAST_MONTH, GraphModel[].class);
-        for (GraphModel model : graphRates) {
-            System.out.println(model.getDatumPrimjene());
-        }
+
 
         return List.of(graphRates);
     }

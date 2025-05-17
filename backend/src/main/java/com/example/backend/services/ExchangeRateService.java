@@ -60,7 +60,8 @@ public class ExchangeRateService {
         return List.of(exchangeRatesArray);
     }
 
-    //public Page<ExchangeRate> getAllExchangeRate(int page, int size){
+    // Bila prva solucija
+    // public Page<ExchangeRate> getAllExchangeRate(int page, int size){
     //  Pageable pageable = PageRequest.of(page, size);
     //  return exchangeRateRepository.findAll(pageable);
     //   }
@@ -192,7 +193,7 @@ public class ExchangeRateService {
         ExchangeRate toRate = findRate(rates, toCurrency);
         BigDecimal toValue = getRateValue(toRate, exchangeType);
 
-        return amount.multiply(fromValue).divide(toValue, 4, RoundingMode.HALF_UP);
+        return amount.multiply(toValue).divide(fromValue, 4, RoundingMode.HALF_UP);
     }
 
     private String getCurrentDate() {
