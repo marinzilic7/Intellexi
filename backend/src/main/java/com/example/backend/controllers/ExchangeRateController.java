@@ -42,12 +42,17 @@ public class ExchangeRateController {
         return "Podaci su uspješno dohvaćeni i spremljeni u bazu!";
     }
 
+
+
+
     /*
+    //Bila je prva solucija
     @GetMapping("/rates")
     public Page<ExchangeRate> getAllExchangeRates(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
         return exchangeRateService.getAllExchangeRate(page, size);
     }
      */
+
     @GetMapping("/rates")
     public List<ExchangeRate> getAllExchangeRates() {
         return exchangeRateService.getAllExchangeRate();
@@ -68,10 +73,10 @@ public class ExchangeRateController {
     public ResponseEntity<List<String>> getCurrenciesCode() {
         List<String> currencies = exchangeRateService.fetchCurrencyCode();
 
+        //Koristeno za testiranje
+        //System.out.println("Dostupne sifre tecajnice iz HNB API-ja:");
 
-        System.out.println("Dostupne valute iz HNB API-ja:");
         currencies.forEach(System.out::println);
-
         return ResponseEntity.ok(currencies);
     }
 
@@ -80,8 +85,8 @@ public class ExchangeRateController {
         List<String> currencies = exchangeRateService.fetchCurrency();
 
 
-        System.out.println("Dostupne valute iz HNB API-ja:");
-        currencies.forEach(System.out::println);
+        //System.out.println("Dostupne valute iz HNB API-ja:");
+        //currencies.forEach(System.out::println);
 
         return ResponseEntity.ok(currencies);
     }
