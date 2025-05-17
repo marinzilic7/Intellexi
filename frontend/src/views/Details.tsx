@@ -10,18 +10,21 @@ const Details = () => {
   const [rate, setRate] = useState<Rate | null>(null);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchRate = async () => {
       try {
+        setLoading(true);
         const res = await axios.get(`http://localhost:8080/rates/${id}`);
         setRate(res.data);
-        console.log(res.data);
         setSuccess(true);
-        setTimeout(() => setSuccess(false), 3000);
       } catch (err) {
         console.error("Greška:", err);
         setError(true);
+      } finally {
+        setLoading(false);
+        setTimeout(() => setSuccess(false), 3000);
         setTimeout(() => setError(false), 3000);
       }
     };
@@ -29,7 +32,13 @@ const Details = () => {
     fetchRate();
   }, [id]);
 
-  if (!rate) return <div className="alert alert-danger text-center">Tečajnice nije pronađena</div>;
+  if (loading) return <div className="text-center">Učitavanje...</div>;
+  if (error || !rate)
+    return (
+      <div className="alert alert-danger text-center">
+        Tečajnica nije pronađena
+      </div>
+    );
 
   // Pozivanje hooka za brisanje
   const { deleteRate } = useDeleteRate(() => {
@@ -38,7 +47,7 @@ const Details = () => {
 
   return (
     <div>
-      <h2 className="text-center">Detalji tečajnice</h2>
+      <h2 className="text-center mt-5 mb-5">Detalji tečajnice</h2>
       {success && (
         <div
           className="alert alert-success w-25 position-absolute end-0 top-0 mt-5 me-5 text-center"

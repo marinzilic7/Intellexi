@@ -60,7 +60,7 @@ const Graph: React.FC = () => {
         />
 
         <select
-          className="form-select w-auto"
+          className="form-select mt-4 w-auto"
           value={range}
           onChange={(e) => setRange(e.target.value as "week" | "month")}
         >
