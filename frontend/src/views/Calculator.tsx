@@ -21,6 +21,7 @@ function Calculator() {
 
   return (
     <div>
+      
       <h1 className="text-center mt-5">Kalkulator</h1>
       <div>
         <form onSubmit={handleConversion} className="w-50 mx-auto mt-5">

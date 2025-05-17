@@ -24,6 +24,7 @@ const Graph: React.FC = () => {
 
   return (
     <div>
+      
       <div className="d-flex justify-content-center align-items-center flex-column mt-5">
         <LineChart width={1000} height={400} data={dataForChart}>
           <CartesianGrid stroke="#ccc" />
