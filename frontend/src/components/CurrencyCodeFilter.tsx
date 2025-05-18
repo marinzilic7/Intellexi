@@ -37,7 +37,7 @@ const CurrencyCodeFilter: React.FC<CurrencyCodeFilterProps> = ({
           value={currencyCode}
           onChange={onCurrencyCodeChange} 
         >
-          <option value="">-- Odaberite valutu --</option>
+          <option value="">-- Odaberite sifru valute --</option>
           {currencyCodeList.map((currency, index) => (
             <option key={index} value={currency}>
               {currency}
