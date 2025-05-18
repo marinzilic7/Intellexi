@@ -103,8 +103,9 @@ docker compose up
 ```
 
 
-### URL ZA FRONTEND 
+### URL ZA FRONTEND & BACKEND
 - **Frontend:** - *http://localhost:5173/*
+- **Backend** - *http://localhost:8080*
 
 *Napomena: Nakon pokretanja projekta, baza se automatski puni tečajnicama za današnji dan, kao i tečajnicama potrebnima za grafički prikaz za razdoblje od današnjeg dana unatrag 30 dana.*
 
