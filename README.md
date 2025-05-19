@@ -91,7 +91,7 @@ Ova aplikacija omogućuje upravljanje i pregled tečajne liste valuta. Sastoji s
 ### Ostalo
 - Cron job – automatski unos tečajnica u 16:30
 - API: Hrvatska narodna banka (HNB)
-- **Docker** – Dokerizacija aplikacije i baze podataka za jednostavno pokretanje i razvoj
+- **Docker** – Dokerizacija aplikacije za jednostavno pokretanje i razvoj
 
 ## 🛠️ Alati za razvoj 
 - Frontend - [Visual Studio Code](https://code.visualstudio.com/)
