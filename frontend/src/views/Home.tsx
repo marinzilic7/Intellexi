@@ -128,7 +128,7 @@ function Home() {
   console.log("Filtrirani tecajevi", filteredRates);
   console.log("Podaci koji se prikazuju:", ratesToDisplay);
 
-  //greska je ovdje
+ 
   const paginatedRates = ratesToDisplay.slice(
     indexOfFirstItem,
     indexOfLastItem
@@ -182,7 +182,7 @@ function Home() {
     navigate(`/details/${id}`);
   };
 
-  //Pozivanje hooka za brisanje
+
   const { deleteRate } = useDeleteRate(() => {
     (id: number) =>
       setExchangeRates((prev) => prev.filter((rate) => rate.id !== id));
