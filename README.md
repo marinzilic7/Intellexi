@@ -93,6 +93,10 @@ Ova aplikacija omogućuje upravljanje i pregled tečajne liste valuta. Sastoji s
 - API: Hrvatska narodna banka (HNB)
 - **Docker** – kontejnerizacija aplikacije i baze podataka za jednostavno pokretanje i razvoj
 
+## 🛠️ Alati za razvoj 
+- Frontend - [Visual Studio Code](https://code.visualstudio.com/)
+- Backend [IntelliJ IDEA](https://www.jetbrains.com/idea/)
+
 ## ▶️ Pokretanje projekta
 
 Projekt možeš pokrenuti pomoću **Docker Compose** naredbe, što omogućuje jednostavnu instalaciju i konfiguraciju svih potrebnih servisa:
