@@ -95,7 +95,7 @@ Ova aplikacija omogućuje upravljanje i pregled tečajne liste valuta. Sastoji s
 
 ## 🛠️ Alati za razvoj 
 - Frontend - [Visual Studio Code](https://code.visualstudio.com/)
-- Backend [IntelliJ IDEA](https://www.jetbrains.com/idea/)
+- Backend - [IntelliJ IDEA](https://www.jetbrains.com/idea/)
 
 ## ▶️ Pokretanje projekta
 
