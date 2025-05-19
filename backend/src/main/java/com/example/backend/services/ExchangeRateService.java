@@ -116,7 +116,6 @@ public class ExchangeRateService {
 
 
     public ExchangeRate createRate(ExchangeRateDTO dto) {
-        // Provjeri postoji li već tečaj za tu valutu i datum
         boolean exists = exchangeRateRepository.existsBySifraValuteAndDatumPrimjene(
                 dto.getSifraValute(), dto.getDatumPrimjene()
         );
@@ -185,11 +184,9 @@ public class ExchangeRateService {
             throw new RuntimeException("Nema dostupnih tečajeva za uneseni datum.");
         }
 
-        //Tečaj za početnu valutu
         ExchangeRate fromRate = findRate(rates, fromCurrency);
         BigDecimal fromValue = getRateValue(fromRate, exchangeType);
 
-        //Tečaj za ciljnu valutu
         ExchangeRate toRate = findRate(rates, toCurrency);
         BigDecimal toValue = getRateValue(toRate, exchangeType);
 

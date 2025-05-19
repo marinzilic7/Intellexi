@@ -43,8 +43,6 @@ public class ExchangeRateController {
     }
 
 
-
-
     /*
     //Bila je prva solucija
     @GetMapping("/rates")
@@ -63,7 +61,6 @@ public class ExchangeRateController {
             @RequestParam @DateTimeFormat(pattern = "dd.MM.yyyy") String startDate,
             @RequestParam @DateTimeFormat(pattern = "dd.MM.yyyy") String endDate) {
 
-        // Dohvaćanje tečajnica s HNB API-ja za zadani raspon datuma
         List<ExchangeRate> rates = exchangeRateService.fetchRatesFromApi(startDate, endDate);
 
         return ResponseEntity.ok(rates);
@@ -73,9 +70,6 @@ public class ExchangeRateController {
     public ResponseEntity<List<String>> getCurrenciesCode() {
         List<String> currencies = exchangeRateService.fetchCurrencyCode();
 
-        //Koristeno za testiranje
-        //System.out.println("Dostupne sifre tecajnice iz HNB API-ja:");
-
         currencies.forEach(System.out::println);
         return ResponseEntity.ok(currencies);
     }
@@ -83,11 +77,6 @@ public class ExchangeRateController {
     @GetMapping("/getCurrency")
     public ResponseEntity<List<String>> getAllCurrencies() {
         List<String> currencies = exchangeRateService.fetchCurrency();
-
-
-        //System.out.println("Dostupne valute iz HNB API-ja:");
-        //currencies.forEach(System.out::println);
-
         return ResponseEntity.ok(currencies);
     }
 
