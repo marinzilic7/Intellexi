@@ -13,7 +13,7 @@ export function getExchangeRates() {
     axios
       .get(`http://localhost:8080/rates?page=${currentPage}`)
       .then((response) => {
-        setExchangeRates(response.data); // samo postavi, totalPages računamo u useEffect
+        setExchangeRates(response.data); 
         console.log("Duzina", response.data.length);
         console.log("Podaci:", response.data);
 
